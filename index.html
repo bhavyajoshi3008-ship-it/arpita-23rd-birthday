@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Happy 23rd Birthday, Arpita! 🎂✈️</title>
-  <meta name="description" content="A special 23rd birthday surprise gift website for Arpita Mahapatra. Pure best-friend vibes, travel, weather, biryani, and mini games.">
-  
+  <meta name="description"
+    content="A special 23rd birthday surprise gift website for Arpita Mahapatra. Pure best-friend vibes, travel, meteorology, biryani, and mini games.">
+
   <!-- Google Fonts: Baloo 2, Fredoka, Caveat (handwriting), Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600;700&family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600;700&family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
 
   <style>
-    /* ==========================================================
-       1. CSS VARIABLES & DESIGN SYSTEM (PASTEL + WEATHER/TRAVEL)
-       ========================================================== */
+    /* =========================================================================
+       1. CSS VARIABLES & THEME DESIGN SYSTEM (SOFT PASTELS + WEATHER/TRAVEL)
+       ========================================================================= */
     :root {
-      --bg-gradient: linear-gradient(135deg, #fff0f3 0%, #f5eefc 35%, #e8f4fc 70%, #fff9eb 100%);
       --blush-pink: #ff7597;
       --blush-soft: #ffd9e2;
       --lavender: #9d72ff;
@@ -28,16 +32,20 @@
       --cream: #fffdf9;
       --mint: #34d399;
       --mint-soft: #d1fae5;
-      
-      --card-bg: rgba(255, 255, 255, 0.88);
-      --card-border: rgba(255, 255, 255, 0.95);
-      --card-shadow: 0 16px 36px -10px rgba(220, 150, 180, 0.2), 0 2px 8px rgba(100, 100, 120, 0.04);
+
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-border: rgba(255, 255, 255, 0.96);
+      --card-shadow: 0 16px 38px -10px rgba(180, 140, 200, 0.22), 0 3px 10px rgba(100, 100, 130, 0.05);
       --text-main: #2e2438;
       --text-muted: #6b5e7d;
+
       --radius-xl: 28px;
       --radius-lg: 20px;
       --radius-md: 14px;
       --radius-sm: 10px;
+
+      --nav-height: 68px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     * {
@@ -47,14 +55,16 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--bg-gradient);
-      color: var(--text-main);
-      min-height: 100vh;
+    html, body {
+      min-height: 100%;
+      width: 100%;
       overflow-x: hidden;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--text-main);
       line-height: 1.6;
       position: relative;
+      background: #fbf8fd;
+      transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     h1, h2, h3, .font-heading {
@@ -66,7 +76,44 @@
       font-family: 'Caveat', cursive;
     }
 
-    /* Fixed floating background elements (drifting clouds, mini planes) */
+    /* =========================================================================
+       2. DYNAMIC WEATHER BACKGROUND ATMOSPHERES (PER-PAGE MOODS)
+       ========================================================================= */
+    body.mood-sunny {
+      background: linear-gradient(145deg, #fff2f5 0%, #fef8eb 45%, #e8f6ff 100%);
+    }
+
+    body.mood-rainbow {
+      background: linear-gradient(135deg, #fff0f3 0%, #faebff 30%, #e0f2fe 70%, #fef3c7 100%);
+    }
+
+    body.mood-golden {
+      background: linear-gradient(140deg, #fff8eb 0%, #fef3c7 40%, #ffe4e6 80%, #fffbf2 100%);
+    }
+
+    body.mood-arcade {
+      background: linear-gradient(135deg, #f5eeff 0%, #e8f4fc 50%, #fdf2f8 100%);
+    }
+
+    body.mood-travel {
+      background: linear-gradient(145deg, #e0f2fe 0%, #eff6ff 45%, #f5f3ff 85%, #fff9eb 100%);
+    }
+
+    body.mood-night {
+      background: linear-gradient(160deg, #1e1b4b 0%, #2e1065 40%, #172554 80%, #0f172a 100%);
+      color: #f8fafc;
+    }
+    body.mood-night .card,
+    body.mood-night .card-title,
+    body.mood-night .text-muted-auto {
+      color: #332047;
+    }
+
+    body.mood-sunset {
+      background: linear-gradient(135deg, #fff1f2 0%, #fed7aa 40%, #f5d0fe 80%, #e0e7ff 100%);
+    }
+
+    /* Fixed sky elements (Clouds, Mini Planes, Stars) */
     .sky-bg {
       position: fixed;
       inset: 0;
@@ -77,590 +124,842 @@
 
     .cloud {
       position: absolute;
-      background: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.68);
       backdrop-filter: blur(4px);
       border-radius: 50px;
       animation: driftClouds linear infinite;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
     }
+
     .cloud::before, .cloud::after {
       content: '';
       position: absolute;
       background: inherit;
       border-radius: 50%;
     }
+
     .cloud-1 {
-      width: 140px; height: 44px; top: 12%; left: -160px;
-      animation-duration: 48s;
+      width: 140px; height: 46px; top: 12%; left: -160px;
+      animation-duration: 34s;
     }
-    .cloud-1::before { width: 56px; height: 56px; top: -28px; left: 24px; }
-    .cloud-1::after { width: 44px; height: 44px; top: -18px; left: 68px; }
+    .cloud-1::before { width: 55px; height: 55px; top: -25px; left: 24px; }
+    .cloud-1::after { width: 44px; height: 44px; top: -16px; left: 68px; }
 
     .cloud-2 {
-      width: 190px; height: 52px; top: 45%; left: -210px;
-      animation-duration: 62s; animation-delay: -20s;
+      width: 190px; height: 56px; top: 48%; left: -220px;
+      animation-duration: 48s; animation-delay: -18s;
+      opacity: 0.6;
     }
-    .cloud-2::before { width: 72px; height: 72px; top: -36px; left: 32px; }
-    .cloud-2::after { width: 58px; height: 58px; top: -24px; left: 95px; }
+    .cloud-2::before { width: 70px; height: 70px; top: -32px; left: 32px; }
+    .cloud-2::after { width: 56px; height: 56px; top: -22px; left: 95px; }
 
     .cloud-3 {
-      width: 120px; height: 38px; top: 78%; left: -140px;
-      animation-duration: 40s; animation-delay: -12s;
+      width: 120px; height: 40px; top: 82%; left: -140px;
+      animation-duration: 38s; animation-delay: -9s;
+      opacity: 0.55;
     }
-    .cloud-3::before { width: 48px; height: 48px; top: -22px; left: 20px; }
-    .cloud-3::after { width: 38px; height: 38px; top: -14px; left: 56px; }
+    .cloud-3::before { width: 48px; height: 48px; top: -22px; left: 18px; }
+    .cloud-3::after { width: 38px; height: 38px; top: -14px; left: 54px; }
 
     @keyframes driftClouds {
       0% { transform: translateX(0); }
       100% { transform: translateX(calc(100vw + 260px)); }
     }
 
-    /* Floating sky plane looping across background */
     .sky-plane {
       position: absolute;
-      top: 18%;
+      top: 16%;
       left: -80px;
-      font-size: 24px;
-      animation: flySkyPlane 35s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-      opacity: 0.75;
-      transform: rotate(6deg);
-    }
-    @keyframes flySkyPlane {
-      0% { transform: translate(-100px, 0) rotate(8deg); }
-      50% { transform: translate(calc(50vw), 40px) rotate(2deg); }
-      100% { transform: translate(calc(100vw + 100px), -20px) rotate(-4deg); }
+      font-size: 26px;
+      animation: flySkyPlane 36s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      opacity: 0.85;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.08));
     }
 
-    /* ==========================================================
-       2. FLOATING MUSIC TOGGLE BUTTON
-       ========================================================== */
+    @keyframes flySkyPlane {
+      0% { transform: translate(-80px, 0) rotate(8deg); }
+      50% { transform: translate(calc(50vw), 35px) rotate(2deg); }
+      100% { transform: translate(calc(100vw + 100px), -25px) rotate(-4deg); }
+    }
+
+    /* Night Sky Twinkling Stars (visible in letter mode) */
+    .night-stars {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      pointer-events: none;
+    }
+    body.mood-night .night-stars {
+      opacity: 1;
+    }
+
+    .star {
+      position: absolute;
+      color: #fffae0;
+      font-size: 14px;
+      animation: twinkleStar 2.8s infinite ease-in-out;
+    }
+    .star:nth-child(1) { top: 10%; left: 15%; animation-delay: 0.2s; font-size: 18px; }
+    .star:nth-child(2) { top: 18%; left: 82%; animation-delay: 1.1s; font-size: 12px; }
+    .star:nth-child(3) { top: 32%; left: 45%; animation-delay: 0.7s; font-size: 16px; }
+    .star:nth-child(4) { top: 65%; left: 18%; animation-delay: 1.8s; font-size: 14px; }
+    .star:nth-child(5) { top: 78%; left: 78%; animation-delay: 0.4s; font-size: 20px; }
+    .star:nth-child(6) { top: 22%; left: 62%; animation-delay: 1.5s; font-size: 13px; }
+
+    @keyframes twinkleStar {
+      0%, 100% { opacity: 0.25; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 6px #fff9c4); }
+    }
+
+    /* =========================================================================
+       3. FLOATING MUSIC TOGGLE BUTTON (ACCESSIBLE ACROSS ALL PAGES)
+       ========================================================================= */
     .music-btn {
       position: fixed;
-      top: 18px;
-      right: 18px;
-      z-index: 990;
-      background: rgba(255, 255, 255, 0.92);
+      top: 16px;
+      right: 16px;
+      z-index: 9990;
+      background: rgba(255, 255, 255, 0.94);
       border: 2px solid var(--blush-soft);
-      backdrop-filter: blur(8px);
-      padding: 9px 15px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 8px 14px;
       border-radius: 30px;
       display: flex;
       align-items: center;
       gap: 7px;
       cursor: pointer;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 700;
       color: var(--text-main);
       box-shadow: 0 6px 18px rgba(157, 114, 255, 0.18);
-      transition: all 0.25s ease;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       user-select: none;
     }
+
     .music-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 22px rgba(157, 114, 255, 0.26);
+      box-shadow: 0 8px 24px rgba(157, 114, 255, 0.28);
       border-color: var(--lavender);
     }
+
     .music-btn.playing {
       background: linear-gradient(135deg, #fff0f5, #f5edff);
       border-color: var(--lavender);
-    }
-    .music-btn.playing .music-icon {
-      animation: musicBeat 1.2s infinite ease-in-out;
-    }
-    @keyframes musicBeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.22) rotate(8deg); }
+      box-shadow: 0 6px 20px rgba(157, 114, 255, 0.28);
     }
 
-    /* ==========================================================
-       3. OPENING SCREEN: GIFT BOX
-       ========================================================== */
+    .music-btn.playing .music-icon {
+      animation: musicBounce 1.2s infinite ease-in-out;
+    }
+
+    @keyframes musicBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.25) rotate(8deg); }
+    }
+
+    /* =========================================================================
+       4. NAVIGATION: FIXED BOTTOM TAB BAR (MOBILE) & TOP NAV (DESKTOP)
+       ========================================================================= */
+    .site-nav {
+      position: fixed;
+      z-index: 9980;
+      transition: all 0.3s ease;
+    }
+
+    /* Mobile First: Fixed Bottom Tab Bar */
+    @media (max-width: 767px) {
+      .site-nav {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: calc(var(--nav-height) + var(--safe-bottom));
+        padding: 6px 8px calc(6px + var(--safe-bottom));
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-top: 1.5px solid rgba(240, 220, 245, 0.9);
+        box-shadow: 0 -8px 25px rgba(100, 80, 120, 0.08);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #716285;
+        font-size: 0.68rem;
+        font-weight: 700;
+        padding: 5px 2px;
+        border-radius: 12px;
+        transition: all 0.22s ease;
+        position: relative;
+        min-width: 0;
+      }
+
+      .nav-icon {
+        font-size: 1.22rem;
+        line-height: 1.1;
+        margin-bottom: 2px;
+        transition: transform 0.2s ease;
+      }
+
+      .nav-label {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        letter-spacing: -0.1px;
+      }
+
+      .nav-item.active {
+        color: #7c3aed;
+      }
+
+      .nav-item.active .nav-icon {
+        transform: translateY(-2px) scale(1.15);
+      }
+
+      .nav-item.active::after {
+        content: '';
+        position: absolute;
+        bottom: 1px;
+        width: 18px;
+        height: 3px;
+        border-radius: 3px;
+        background: linear-gradient(90deg, var(--blush-pink), var(--lavender));
+      }
+    }
+
+    /* Desktop View: Sleek Floating Top Navigation Bar */
+    @media (min-width: 768px) {
+      .site-nav {
+        top: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1.5px solid rgba(255, 255, 255, 0.95);
+        border-radius: 40px;
+        padding: 6px 14px;
+        box-shadow: 0 10px 32px rgba(140, 100, 180, 0.16);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .nav-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        color: #5c4f6f;
+        font-size: 0.88rem;
+        font-weight: 700;
+        padding: 8px 15px;
+        border-radius: 25px;
+        transition: all 0.22s ease;
+      }
+
+      .nav-icon {
+        font-size: 1.12rem;
+      }
+
+      .nav-item:hover {
+        background: rgba(245, 235, 255, 0.7);
+        color: var(--lavender);
+        transform: translateY(-1px);
+      }
+
+      .nav-item.active {
+        background: linear-gradient(135deg, var(--blush-pink), var(--lavender));
+        color: #ffffff;
+        box-shadow: 0 4px 14px rgba(157, 114, 255, 0.35);
+      }
+    }
+
+    /* =========================================================================
+       5. MULTI-PAGE CONTAINER & SMOOTH SECTION TRANSITIONS
+       ========================================================================= */
+    #pageAppContainer {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px 16px calc(var(--nav-height) + var(--safe-bottom) + 30px);
+      min-height: 100vh;
+    }
+
+    @media (min-width: 768px) {
+      #pageAppContainer {
+        padding-top: 86px;
+        padding-bottom: 50px;
+      }
+    }
+
+    /* Page View Sections: Only ONE active at a time! */
+    .page-view {
+      display: none;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.38s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  transform 0.38s cubic-bezier(0.2, 0.8, 0.2, 1);
+      width: 100%;
+    }
+
+    .page-view.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+      animation: pageReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes pageReveal {
+      0% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.99);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Respect reduced-motion settings */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .page-view.active {
+        animation: none !important;
+      }
+    }
+
+    /* Standard Card Component */
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 2px solid var(--card-border);
+      border-radius: var(--radius-xl);
+      padding: 26px 20px;
+      margin-bottom: 22px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    .badge-pink { background: var(--blush-soft); color: #be185d; }
+    .badge-purple { background: var(--lavender-soft); color: #6b21a8; }
+    .badge-blue { background: var(--sky-soft); color: #0369a1; }
+    .badge-yellow { background: var(--saffron-soft); color: #b45309; }
+
+    .card-title {
+      font-size: 1.58rem;
+      font-weight: 800;
+      color: #2a1f3d;
+      margin-bottom: 8px;
+      line-height: 1.25;
+    }
+
+    /* "Next →" Bottom Nav Button On Every Page */
+    .next-page-bar {
+      margin-top: 26px;
+      padding-top: 12px;
+      text-align: center;
+    }
+
+    .btn-next-page {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--blush-pink), var(--lavender));
+      color: #ffffff;
+      font-family: 'Fredoka', cursive;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 35px;
+      text-decoration: none;
+      box-shadow: 0 10px 24px rgba(157, 114, 255, 0.32);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-next-page:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 28px rgba(157, 114, 255, 0.42);
+    }
+
+    /* =========================================================================
+       6. OPENING GIFT BOX OVERLAY (INITIAL TAP TO UNWRAP & START MUSIC)
+       ========================================================================= */
     #openingScreen {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at center, #fff6f8 0%, #faedf8 50%, #eff6ff 100%);
       z-index: 10000;
+      background: radial-gradient(circle at center, #fff9f9 0%, #f6ebff 60%, #e8f4fc 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 24px;
       text-align: center;
-      transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s ease;
+      transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+                  visibility 0.65s ease;
     }
+
     #openingScreen.unlocked {
       opacity: 0;
-      transform: scale(1.08);
+      visibility: hidden;
       pointer-events: none;
     }
 
-    .opening-tag {
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px dashed var(--lavender);
-      color: var(--lavender);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      margin-bottom: 24px;
-      box-shadow: 0 4px 12px rgba(157, 114, 255, 0.12);
-      animation: pulseGlow 2.4s infinite;
-    }
-    @keyframes pulseGlow {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.04); }
-    }
-
-    /* Animated 3D Gift Box */
     .gift-box-wrapper {
       position: relative;
-      width: 170px;
-      height: 170px;
       cursor: pointer;
-      margin: 10px 0 26px;
-      perspective: 800px;
+      margin: 20px auto;
+      width: 140px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
     }
+
     .gift-box {
-      width: 100%;
-      height: 100%;
       position: relative;
-      transform-style: preserve-3d;
+      width: 105px;
+      height: 95px;
       transition: transform 0.3s ease;
-      animation: giftBounce 2.5s ease-in-out infinite;
     }
-    @keyframes giftBounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
+
     .gift-box:hover {
-      transform: scale(1.05);
+      transform: scale(1.06);
     }
 
     .gift-lid {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      width: 150px;
-      height: 38px;
-      background: linear-gradient(135deg, #ff6b8b, #ff8da5);
-      border-radius: 12px;
-      box-shadow: 0 8px 18px rgba(255, 107, 139, 0.35);
+      top: -14px;
+      left: -6px;
+      width: 117px;
+      height: 28px;
+      background: linear-gradient(135deg, #ff6584, #f43f5e);
+      border-radius: 8px;
+      box-shadow: 0 6px 14px rgba(244, 63, 94, 0.35);
       z-index: 3;
       transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .gift-lid::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 32px;
-      height: 100%;
-      background: #facc15;
-    }
+
     .gift-bow {
       position: absolute;
       top: -24px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 42px;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.12));
+      font-size: 32px;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
     }
+
     .gift-body {
       position: absolute;
-      top: 40px;
-      left: 20px;
-      width: 130px;
-      height: 120px;
-      background: linear-gradient(135deg, #ff7597, #ff537e);
-      border-radius: 0 0 16px 16px;
-      box-shadow: 0 18px 30px rgba(255, 83, 126, 0.28);
-      z-index: 2;
-      overflow: hidden;
+      bottom: 0;
+      left: 0;
+      width: 105px;
+      height: 80px;
+      background: linear-gradient(135deg, #fb7185, #e11d48);
+      border-radius: 4px 4px 14px 14px;
+      box-shadow: 0 12px 28px rgba(225, 29, 72, 0.35);
     }
+
     .gift-body::before {
       content: '';
       position: absolute;
-      top: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 28px;
+      width: 22px;
       height: 100%;
       background: #facc15;
     }
-    .gift-body::after {
-      content: '';
+
+    .gift-sparkles span {
       position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
-      width: 100%;
-      height: 28px;
-      background: #facc15;
+      font-size: 20px;
+      animation: floatSparkle 2s infinite ease-in-out;
     }
 
-    .gift-sparkles {
-      position: absolute;
-      inset: -20px;
-      pointer-events: none;
-      font-size: 20px;
-    }
-    .sparkle-1 { position: absolute; top: 10px; left: -10px; animation: floatSparkle 2s infinite ease-in-out; }
-    .sparkle-2 { position: absolute; bottom: 20px; right: -15px; animation: floatSparkle 2.2s 0.6s infinite ease-in-out; }
-    .sparkle-3 { position: absolute; top: -10px; right: 10px; animation: floatSparkle 1.8s 1.1s infinite ease-in-out; }
+    .sparkle-1 { top: -20px; right: -15px; animation-delay: 0.2s; }
+    .sparkle-2 { bottom: -10px; left: -20px; animation-delay: 0.8s; }
+    .sparkle-3 { top: 30px; left: -25px; animation-delay: 1.4s; }
+
     @keyframes floatSparkle {
-      0%, 100% { transform: translateY(0) scale(0.9); opacity: 0.6; }
+      0%, 100% { transform: translateY(0) scale(0.9); opacity: 0.7; }
       50% { transform: translateY(-8px) scale(1.2); opacity: 1; }
     }
 
     .opening-prompt {
       font-family: 'Fredoka', cursive;
-      font-size: 1.65rem;
+      font-size: 1.85rem;
       font-weight: 700;
-      color: #b91c4d;
-      margin-top: 10px;
-      animation: pulseText 1.6s ease-in-out infinite alternate;
+      color: #9f1239;
+      margin-top: 14px;
+      animation: pulsePrompt 2s infinite;
     }
-    @keyframes pulseText {
-      from { transform: scale(0.97); }
-      to { transform: scale(1.03); }
+
+    @keyframes pulsePrompt {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
     }
+
     .opening-subtext {
       color: var(--text-muted);
-      font-size: 0.95rem;
-      margin-top: 6px;
+      font-size: 0.94rem;
+      margin-top: 8px;
+      max-width: 320px;
+      font-weight: 600;
     }
 
-    /* ==========================================================
-       4. MAIN CONTAINER & SECTION CARDS
-       ========================================================== */
-    #mainPage {
-      display: none;
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 24px 18px 90px;
-      position: relative;
-      z-index: 10;
-    }
-
-    section {
-      margin-bottom: 34px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1.5px solid var(--card-border);
-      border-radius: var(--radius-xl);
-      padding: 26px 22px;
-      box-shadow: var(--card-shadow);
-      backdrop-filter: blur(14px);
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-    .card:hover {
-      box-shadow: 0 20px 42px -8px rgba(220, 150, 180, 0.28);
-    }
-
-    .card-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 14px;
+    .opening-tag {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--lavender);
+      background: var(--lavender-soft);
+      padding: 6px 14px;
       border-radius: 20px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 14px;
-    }
-    .badge-pink { background: var(--blush-soft); color: #be185d; }
-    .badge-blue { background: var(--sky-soft); color: #0369a1; }
-    .badge-purple { background: var(--lavender-soft); color: #6d28d9; }
-    .badge-saffron { background: var(--saffron-soft); color: #b45309; }
-    .badge-mint { background: var(--mint-soft); color: #047857; }
-
-    .card-title {
-      font-size: 1.65rem;
-      font-weight: 700;
-      color: var(--text-main);
       margin-bottom: 8px;
-      line-height: 1.3;
     }
 
-    /* ==========================================================
-       5. HERO SECTION
-       ========================================================== */
+    /* =========================================================================
+       7. PAGE 1: HOME (#home)
+       ========================================================================= */
     .hero-section {
       text-align: center;
-      padding: 34px 20px 28px;
-      position: relative;
+      padding: 34px 22px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 243, 246, 0.92));
     }
+
     .hero-balloons {
       display: flex;
       justify-content: center;
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: 14px;
       font-size: 32px;
+      margin-bottom: 12px;
     }
+
     .balloon-anim {
       display: inline-block;
-      animation: floatBalloon 3s ease-in-out infinite alternate;
+      animation: balloonFloat 3s infinite ease-in-out;
     }
-    .balloon-anim:nth-child(2) { animation-delay: 0.5s; }
-    .balloon-anim:nth-child(3) { animation-delay: 1.1s; }
-    .balloon-anim:nth-child(4) { animation-delay: 1.7s; }
-    @keyframes floatBalloon {
-      0% { transform: translateY(0) rotate(-4deg); }
-      100% { transform: translateY(-14px) rotate(4deg); }
+
+    .balloon-anim:nth-child(2) { animation-delay: 0.7s; }
+    .balloon-anim:nth-child(3) { animation-delay: 1.4s; }
+    .balloon-anim:nth-child(4) { animation-delay: 2.1s; }
+
+    @keyframes balloonFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(4deg); }
     }
 
     .hero-title {
       font-size: 2.25rem;
       font-weight: 800;
-      background: linear-gradient(135deg, #d946ef 0%, #ff537e 50%, #f59e0b 100%);
+      line-height: 1.2;
+      background: linear-gradient(135deg, #e11d48, #9333ea, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 12px;
-      line-height: 1.25;
+      margin-bottom: 14px;
     }
 
     .hero-quote-box {
-      background: rgba(255, 255, 255, 0.7);
-      border: 1px dashed var(--blush-pink);
-      border-radius: var(--radius-md);
-      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 2px dashed var(--blush-soft);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin: 16px auto;
       font-size: 1.05rem;
       font-weight: 600;
-      color: #9d174d;
-      margin: 16px auto 14px;
-      max-width: 520px;
-      box-shadow: 0 4px 14px rgba(255, 117, 151, 0.1);
+      color: #4a2840;
+      line-height: 1.5;
     }
 
     .hero-weather-forecast {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: linear-gradient(135deg, #e0f2fe, #fef3c7);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      padding: 6px 16px;
-      border-radius: 30px;
-      font-size: 0.82rem;
-      font-weight: 700;
+      background: var(--sky-soft);
+      border: 1.5px solid #bae6fd;
       color: #0369a1;
-      margin-top: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 30px;
+      margin-top: 10px;
     }
 
-    /* ==========================================================
-       6. HOW WE MET: TIMELINE SECTION
-       ========================================================== */
+    .hero-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--blush-pink), var(--lavender));
+      color: #fff;
+      font-family: 'Fredoka', cursive;
+      font-size: 1.25rem;
+      font-weight: 700;
+      padding: 16px 36px;
+      border-radius: 35px;
+      text-decoration: none;
+      box-shadow: 0 12px 30px rgba(157, 114, 255, 0.36);
+      transition: all 0.25s ease;
+      margin-top: 22px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .hero-action-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 16px 36px rgba(157, 114, 255, 0.46);
+    }
+
+    /* =========================================================================
+       8. PAGE 2: OUR STORY (#story)
+       ========================================================================= */
     .timeline {
       position: relative;
-      padding-left: 26px;
+      padding-left: 24px;
+      margin-top: 18px;
     }
+
     .timeline::before {
       content: '';
       position: absolute;
-      top: 14px;
+      left: 7px;
+      top: 8px;
       bottom: 24px;
-      left: 8px;
       width: 3px;
-      background: linear-gradient(to bottom, var(--blush-pink), var(--lavender), var(--sky-blue));
-      border-radius: 2px;
+      background: linear-gradient(180deg, var(--blush-pink), var(--lavender), var(--sky-blue));
+      border-radius: 3px;
     }
 
     .timeline-step {
       position: relative;
       margin-bottom: 28px;
     }
+
     .timeline-dot {
       position: absolute;
-      left: -26px;
+      left: -24px;
       top: 4px;
-      width: 19px;
-      height: 19px;
-      background: #fff;
-      border: 3.5px solid var(--blush-pink);
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
-      box-shadow: 0 0 0 3px rgba(255, 117, 151, 0.2);
+      background: #ffffff;
+      border: 3.5px solid var(--lavender);
+      box-shadow: 0 0 0 4px var(--lavender-soft);
     }
-    .timeline-step:nth-child(2) .timeline-dot { border-color: var(--lavender); box-shadow: 0 0 0 3px rgba(157, 114, 255, 0.2); }
-    .timeline-step:nth-child(3) .timeline-dot { border-color: var(--sky-blue); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2); }
-    .timeline-step:nth-child(4) .timeline-dot { border-color: var(--saffron); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); }
 
     .timeline-step-title {
-      font-size: 1.02rem;
-      font-weight: 700;
-      color: var(--text-main);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #2e2438;
       margin-bottom: 6px;
       display: flex;
       align-items: center;
-      gap: 6px;
-    }
-
-    .fake-comment-box {
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid #e2e8f0;
-      border-radius: var(--radius-md);
-      padding: 10px 14px;
-      font-size: 0.88rem;
-      margin-top: 6px;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.03);
-    }
-    .comment-avatar {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, #a855f7, #ec4899);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.8rem;
-      flex-shrink: 0;
-    }
-    .comment-author {
-      font-weight: 700;
-      font-size: 0.82rem;
-      color: #1e293b;
-    }
-    .comment-text {
-      color: #475569;
-      font-size: 0.84rem;
-      margin-top: 1px;
+      gap: 8px;
     }
 
     .timeline-highlight-pill {
       display: inline-block;
       background: #fdf2f8;
-      border: 1px solid var(--blush-soft);
-      color: #be185d;
-      padding: 7px 14px;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 0.88rem;
-      margin-top: 4px;
+      border-left: 3.5px solid var(--blush-pink);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #9d174d;
+      margin-top: 6px;
     }
 
-    /* DM Mockup */
-    .dm-mockup {
-      background: #fafaf9;
-      border: 1px solid #e7e5e4;
-      border-radius: var(--radius-lg);
-      padding: 16px 14px;
-      margin-top: 10px;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
+    /* Fake IG Comment Box */
+    .fake-comment-box {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-top: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
     }
+
+    .comment-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .comment-author {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .comment-text {
+      font-size: 0.92rem;
+      color: #334155;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* Instagram DM Mockup */
+    .dm-mockup {
+      background: #ffffff;
+      border: 2px solid #f1e6f7;
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-top: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+    }
+
     .dm-header {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #e7e5e4;
-      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1.5px solid #f1f5f9;
+      margin-bottom: 14px;
     }
+
     .dm-avatar {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #f43f5e, #fb923c);
+      background: linear-gradient(135deg, var(--blush-pink), #f59e0b);
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.9rem;
+      font-weight: 800;
+      font-size: 0.95rem;
     }
+
     .dm-name {
-      font-weight: 700;
       font-size: 0.9rem;
-      color: #292524;
+      font-weight: 800;
+      color: #1e293b;
     }
+
     .dm-status {
-      font-size: 0.72rem;
-      color: #78716c;
+      font-size: 0.75rem;
+      color: #10b981;
+      font-weight: 600;
     }
 
     .chat-bubble {
       max-width: 82%;
-      padding: 9px 14px;
+      padding: 10px 14px;
       border-radius: 18px;
-      font-size: 0.86rem;
+      font-size: 0.92rem;
+      margin-bottom: 10px;
       line-height: 1.45;
-      margin-bottom: 10px;
       position: relative;
-      animation: bubblePop 0.4s ease forwards;
-    }
-    @keyframes bubblePop {
-      0% { opacity: 0; transform: translateY(8px) scale(0.96); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .bubble-me {
-      margin-left: auto;
-      background: linear-gradient(135deg, #38bdf8, #0284c7);
-      color: #fff;
-      border-bottom-right-radius: 4px;
-      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2);
-    }
-    .bubble-arpita {
-      margin-right: auto;
-      background: #f3f4f6;
-      color: #1f2937;
-      border-bottom-left-radius: 4px;
-      border: 1px solid #e5e7eb;
-    }
-    .bubble-highlight-advice {
-      background: linear-gradient(135deg, #fef3c7, #fde68a);
-      border: 1.5px solid #f59e0b;
-      color: #92400e;
-      border-radius: 16px;
-      padding: 12px 16px;
-      font-weight: 700;
-      margin: 12px 0 6px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
-    }
-    .advice-caption {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: #b45309;
-      text-align: center;
-      margin-bottom: 10px;
     }
 
-    /* ==========================================================
-       7. THINGS I LOVE ABOUT YOU (6 TAPPABLE CARDS)
-       ========================================================== */
+    .bubble-me {
+      background: linear-gradient(135deg, #7c3aed, #6366f1);
+      color: #ffffff;
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+    }
+
+    .bubble-arpita {
+      background: #f1f5f9;
+      color: #1e293b;
+      margin-right: auto;
+      border-bottom-left-radius: 4px;
+    }
+
+    .bubble-highlight-advice {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 2px solid #f59e0b;
+      color: #92400e;
+      font-weight: 800;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      margin: 12px 0 6px;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+    }
+
+    .advice-caption {
+      font-size: 0.85rem;
+      color: #6b5e7d;
+      font-style: italic;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    /* =========================================================================
+       9. PAGE 3: WHY YOU'RE AWESOME (#why)
+       ========================================================================= */
     .love-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 14px;
       margin-top: 14px;
     }
-    @media (max-width: 460px) {
-      .love-grid { grid-template-columns: 1fr; }
+
+    @media (max-width: 480px) {
+      .love-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .flip-card {
-      background: transparent;
+      background-color: transparent;
+      height: 180px;
       perspective: 1000px;
-      height: 165px;
       cursor: pointer;
     }
+
     .flip-card-inner {
       position: relative;
       width: 100%;
       height: 100%;
       text-align: center;
-      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       transform-style: preserve-3d;
-      border-radius: var(--radius-lg);
     }
+
     .flip-card.flipped .flip-card-inner {
       transform: rotateY(180deg);
     }
@@ -668,591 +967,540 @@
     .flip-front, .flip-back {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
       border-radius: var(--radius-lg);
-      padding: 18px 14px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border: 1.5px solid rgba(255, 255, 255, 0.85);
-      box-shadow: 0 8px 20px rgba(100, 100, 120, 0.06);
     }
+
     .flip-front {
-      background: linear-gradient(135deg, #ffffff 0%, #fff5f8 100%);
+      background: #ffffff;
+      border: 2px solid #f0e6f7;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
     }
+
     .flip-back {
-      background: linear-gradient(135deg, #fff0f5 0%, #f3e8ff 100%);
+      background: linear-gradient(135deg, #fdf4ff, #fae8ff);
+      border: 2px solid var(--lavender);
       transform: rotateY(180deg);
-      border-color: var(--blush-soft);
+      box-shadow: 0 10px 24px rgba(157, 114, 255, 0.15);
     }
+
     .flip-icon {
-      font-size: 32px;
-      margin-bottom: 6px;
+      font-size: 38px;
+      margin-bottom: 8px;
     }
+
     .flip-title {
-      font-size: 0.98rem;
-      font-weight: 700;
-      color: var(--text-main);
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: #2e2438;
+      line-height: 1.25;
     }
+
     .flip-hint {
       font-size: 0.72rem;
       color: var(--text-muted);
-      margin-top: 4px;
-      font-weight: 600;
+      margin-top: 8px;
+      font-weight: 700;
     }
+
     .flip-back-text {
-      font-size: 0.86rem;
+      font-size: 0.88rem;
       font-weight: 600;
       color: #4a2840;
       line-height: 1.4;
     }
 
-    /* ==========================================================
-       8. FOODIE SECTION (BIRYANI RAIN)
-       ========================================================== */
+    /* Foodie Biryani Menu Card */
     .menu-card {
-      background: linear-gradient(135deg, #fffdf8, #fff7ed);
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
       border: 2px solid #fde68a;
       text-align: center;
       padding: 26px 20px;
     }
+
     .menu-header-badge {
-      background: #fef3c7;
-      color: #b45309;
-      font-size: 0.8rem;
-      font-weight: 700;
+      display: inline-block;
+      background: #f59e0b;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 800;
       padding: 4px 14px;
       border-radius: 20px;
-      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .menu-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #78350f;
       margin-bottom: 8px;
     }
-    .menu-title {
-      font-size: 1.55rem;
-      font-weight: 800;
-      color: #92400e;
-      margin-bottom: 6px;
-    }
+
     .menu-subline {
       font-size: 0.95rem;
-      color: #78350f;
+      color: #92400e;
       font-weight: 600;
       margin-bottom: 18px;
     }
+
     .biryani-hero-btn {
-      background: linear-gradient(135deg, #f59e0b, #ea580c);
+      background: linear-gradient(135deg, #f59e0b, #d97706);
       color: #fff;
       border: none;
       padding: 13px 26px;
       border-radius: 30px;
+      font-family: 'Fredoka', cursive;
       font-size: 1.05rem;
       font-weight: 700;
-      font-family: 'Fredoka', cursive;
       cursor: pointer;
-      box-shadow: 0 10px 24px rgba(234, 88, 12, 0.3);
+      box-shadow: 0 8px 22px rgba(217, 119, 6, 0.35);
       transition: all 0.25s ease;
       display: inline-flex;
       align-items: center;
       gap: 8px;
     }
+
     .biryani-hero-btn:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 14px 28px rgba(234, 88, 12, 0.38);
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 12px 28px rgba(217, 119, 6, 0.45);
     }
-    .biryani-hero-btn:active {
-      transform: translateY(1px) scale(0.98);
-    }
+
     .biryani-counter {
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       font-weight: 700;
       color: #b45309;
       margin-top: 12px;
     }
 
-    /* Falling Food Container */
-    #foodRainBox {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 9999;
-      overflow: hidden;
-    }
+    /* Falling Food Rain Elements */
     .falling-food {
-      position: absolute;
-      top: -60px;
-      font-size: 34px;
-      animation: dropFood 3.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
-    }
-    @keyframes dropFood {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      85% { opacity: 1; }
-      100% { transform: translateY(calc(100vh + 80px)) rotate(360deg); opacity: 0; }
+      position: fixed;
+      pointer-events: none;
+      z-index: 10002;
+      animation: fallFoodDown linear forwards;
     }
 
-    /* ==========================================================
-       9. MINI GAMES ZONE: ARPITA'S BIRTHDAY ARCADE 🎮
-       ========================================================== */
+    @keyframes fallFoodDown {
+      0% {
+        top: -60px;
+        transform: rotate(0deg) scale(0.8);
+        opacity: 1;
+      }
+      100% {
+        top: 105vh;
+        transform: rotate(360deg) scale(1.15);
+        opacity: 0.85;
+      }
+    }
+
+    /* =========================================================================
+       10. PAGE 4: ARCADE (#arcade)
+       ========================================================================= */
     .arcade-hub-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      grid-template-columns: 1fr;
+      gap: 14px;
       margin-top: 14px;
-    }
-    @media (max-width: 580px) {
-      .arcade-hub-grid { grid-template-columns: 1fr; }
     }
 
     .game-trigger-card {
-      background: linear-gradient(135deg, #ffffff 0%, #fcf7ff 100%);
-      border: 1.5px solid rgba(157, 114, 255, 0.2);
+      background: #ffffff;
+      border: 2px solid #ebdfff;
       border-radius: var(--radius-lg);
-      padding: 18px 14px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.25s ease;
+      padding: 18px 20px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      min-height: 160px;
-    }
-    .game-trigger-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(157, 114, 255, 0.2);
-      border-color: var(--lavender);
-    }
-    .game-icon-large {
-      font-size: 40px;
-      margin-bottom: 6px;
-    }
-    .game-card-name {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 4px;
-    }
-    .game-card-desc {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-      line-height: 1.35;
-    }
-    .game-play-badge {
-      background: var(--lavender);
-      color: #fff;
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 6px 14px;
-      border-radius: 20px;
-      box-shadow: 0 4px 10px rgba(157, 114, 255, 0.3);
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(157, 114, 255, 0.08);
+      transition: all 0.25s ease;
     }
 
-    /* Dedicated Arcade Modal Overlay (Fit Phone Screen & touch-action: none) */
+    .game-trigger-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--lavender);
+      box-shadow: 0 10px 26px rgba(157, 114, 255, 0.18);
+    }
+
+    .game-icon-large {
+      font-size: 34px;
+      margin-bottom: 4px;
+    }
+
+    .game-card-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #2e2438;
+    }
+
+    .game-card-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .game-play-badge {
+      background: linear-gradient(135deg, var(--blush-pink), var(--lavender));
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.86rem;
+      padding: 8px 16px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+
+    /* Arcade Game Modal (Scroll-locked on phone) */
     #arcadeModal {
       position: fixed;
       inset: 0;
-      background: rgba(20, 14, 30, 0.85);
-      backdrop-filter: blur(8px);
-      z-index: 10001;
+      background: rgba(15, 10, 25, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 10005;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 14px;
-      touch-action: none; /* Crucial for games on phone */
+      touch-action: none; /* Crucial: no scroll while playing */
     }
+
     #arcadeModal.active {
       display: flex;
     }
 
-    .arcade-screen-box {
-      background: var(--cream);
+    .arcade-box {
+      background: #ffffff;
       border-radius: var(--radius-xl);
-      width: 100%;
       max-width: 440px;
-      max-height: 94vh;
-      overflow-y: auto;
+      width: 100%;
       padding: 20px 18px;
+      text-align: center;
       position: relative;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      border: 2px solid rgba(255, 255, 255, 0.6);
-      display: flex;
-      flex-direction: column;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      touch-action: none;
     }
 
-    .arcade-nav-bar {
+    .arcade-box-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 14px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #e2e8f0;
     }
+
     .arcade-back-btn {
       background: #f1f5f9;
       border: none;
-      color: #475569;
+      padding: 7px 14px;
+      border-radius: 20px;
       font-weight: 700;
       font-size: 0.85rem;
-      padding: 6px 14px;
-      border-radius: 20px;
+      color: #475569;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .arcade-active-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-main);
     }
 
-    /* GAME 1: BIRYANI CATCHER */
-    .catcher-stats-bar {
+    .arcade-stats-bar {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      padding: 8px 14px;
       border-radius: 12px;
-      margin-bottom: 10px;
-      font-weight: 700;
-      font-size: 0.85rem;
+      padding: 8px;
+      margin-bottom: 12px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: #334155;
     }
+
+    /* Biryani Catcher Canvas */
     #catcherCanvas {
       width: 100%;
-      height: 380px;
-      background: linear-gradient(180deg, #e0f2fe 0%, #fff7ed 100%);
-      border-radius: var(--radius-lg);
-      border: 2px solid #bae6fd;
-      touch-action: none;
+      height: 290px;
+      background: linear-gradient(180deg, #dbeafe 0%, #eff6ff 100%);
+      border-radius: var(--radius-md);
       display: block;
-      cursor: ew-resize;
+      touch-action: none;
+      border: 1.5px solid #bfdbfe;
     }
 
-    /* GAME 2: WEATHER MATCH */
-    .match-stats-bar {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      background: #f0fdf4;
-      padding: 8px 14px;
-      border-radius: 12px;
-      color: #166534;
-    }
-    .weather-cards-grid {
+    /* Weather Match Grid */
+    .weather-grid-board {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
-      margin-bottom: 14px;
+      margin: 14px 0;
     }
+
     .weather-card-tile {
       aspect-ratio: 1;
-      background: linear-gradient(135deg, #e0f2fe, #bae6fd);
-      border: 2px solid #7dd3fc;
-      border-radius: 14px;
+      background: #f1f5f9;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
+      font-size: 28px;
       cursor: pointer;
       user-select: none;
-      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .weather-card-tile.face-down {
-      background: linear-gradient(135deg, #c084fc, #9333ea);
-      border-color: #a855f7;
-      color: transparent;
-      font-size: 0;
-    }
-    .weather-card-tile.face-down::after {
-      content: '⛅';
-      font-size: 20px;
-      opacity: 0.9;
-    }
-    .weather-card-tile.matched {
-      background: linear-gradient(135deg, #bbf7d0, #86efac);
-      border-color: #22c55e;
-      cursor: default;
-      animation: popMatched 0.4s ease;
-    }
-    @keyframes popMatched {
-      0% { transform: scale(0.9); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
+      transition: transform 0.25s, background 0.2s;
     }
 
-    /* GAME 3: HOW WELL DO YOU KNOW ME? */
-    .quiz-progress-bar-bg {
-      width: 100%;
-      height: 8px;
+    .weather-card-tile.face-down {
+      background: linear-gradient(135deg, var(--blush-soft), var(--lavender-soft));
+      border-color: #d8b4fe;
+      color: transparent;
+    }
+
+    .weather-card-tile.matched {
+      background: #dcfce7;
+      border-color: #86efac;
+      cursor: default;
+      animation: matchSuccess 0.4s ease;
+    }
+
+    @keyframes matchSuccess {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    /* Quiz Container */
+    .quiz-progress-bar {
+      height: 6px;
       background: #e2e8f0;
-      border-radius: 4px;
-      margin-bottom: 14px;
+      border-radius: 10px;
+      margin-bottom: 12px;
       overflow: hidden;
     }
-    .quiz-progress-bar-fill {
+
+    .quiz-progress-fill {
       height: 100%;
+      background: linear-gradient(90deg, var(--blush-pink), var(--lavender));
       width: 20%;
-      background: linear-gradient(90deg, #ec4899, #8b5cf6);
       transition: width 0.3s ease;
     }
+
     .quiz-q-num {
       font-size: 0.78rem;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--lavender);
       text-transform: uppercase;
-      margin-bottom: 4px;
+      letter-spacing: 0.5px;
     }
+
     .quiz-question-text {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 16px;
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin: 8px 0 16px;
       line-height: 1.35;
     }
+
     .quiz-options-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-bottom: 16px;
     }
+
     .quiz-option-btn {
-      background: #ffffff;
-      border: 1.5px solid #cbd5e1;
-      padding: 12px 16px;
-      border-radius: 14px;
-      text-align: left;
-      font-size: 0.92rem;
-      font-weight: 600;
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
       color: #334155;
       cursor: pointer;
       transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      text-align: left;
     }
-    .quiz-option-btn:hover:not(:disabled) {
-      border-color: var(--lavender);
-      background: #faf5ff;
+
+    .quiz-option-btn:hover {
+      background: #f1f5f9;
+      border-color: var(--sky-blue);
     }
+
     .quiz-option-btn.correct {
-      background: #dcfce7 !important;
-      border-color: #22c55e !important;
-      color: #15803d !important;
+      background: #dcfce7;
+      border-color: #22c55e;
+      color: #15803d;
     }
+
     .quiz-option-btn.incorrect {
-      background: #fee2e2 !important;
-      border-color: #ef4444 !important;
-      color: #b91c1c !important;
+      background: #fee2e2;
+      border-color: #ef4444;
+      color: #b91c1c;
     }
+
     .quiz-feedback-box {
-      font-size: 0.88rem;
+      font-size: 0.92rem;
       font-weight: 700;
-      text-align: center;
-      margin-bottom: 14px;
+      margin-top: 12px;
       min-height: 24px;
     }
 
-    /* Common Game End Result Screen */
-    .game-result-container {
-      text-align: center;
-      padding: 20px 10px;
+    .arcade-game-result {
+      padding: 16px 0;
     }
-    .result-icon {
-      font-size: 50px;
+
+    .result-icon-big {
+      font-size: 52px;
       margin-bottom: 8px;
     }
+
     .result-title {
       font-size: 1.45rem;
       font-weight: 800;
-      color: var(--text-main);
-      margin-bottom: 6px;
-    }
-    .result-msg {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 20px;
-      line-height: 1.4;
-    }
-    .arcade-action-btn {
-      background: linear-gradient(135deg, var(--blush-pink), var(--lavender));
-      color: #fff;
-      border: none;
-      padding: 11px 24px;
-      border-radius: 25px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      box-shadow: 0 6px 18px rgba(157, 114, 255, 0.25);
+      color: #1e293b;
+      margin-bottom: 8px;
     }
 
-    /* ==========================================================
-       10. DISTANCE SECTION (BOARDING PASS STYLE)
-       ========================================================== */
+    .result-msg {
+      font-size: 1rem;
+      color: #475569;
+      font-weight: 600;
+      margin-bottom: 18px;
+      line-height: 1.45;
+    }
+
+    /* =========================================================================
+       11. PAGE 5: JOURNEY (#journey)
+       ========================================================================= */
     .boarding-pass {
-      background: #fff;
+      background: #ffffff;
+      border: 2px dashed #cbd5e1;
       border-radius: var(--radius-xl);
-      border: 1.5px solid #e2e8f0;
-      box-shadow: 0 16px 36px rgba(100, 116, 139, 0.12);
-      overflow: hidden;
+      padding: 24px 20px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.05);
       position: relative;
     }
+
     .pass-header {
-      background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-      color: #fff;
-      padding: 14px 20px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      font-weight: 700;
-      font-size: 0.88rem;
+      align-items: center;
+      border-bottom: 1.5px solid #f1f5f9;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #64748b;
     }
+
     .pass-flight-title {
+      color: #0369a1;
       display: flex;
       align-items: center;
-      gap: 7px;
-    }
-    .pass-body {
-      padding: 24px 20px 18px;
+      gap: 6px;
     }
 
     .flight-path-visual {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin: 18px 0;
       position: relative;
-      margin: 12px 0 20px;
     }
+
     .node-city {
       text-align: center;
-      z-index: 2;
     }
+
     .node-code {
-      font-family: 'Fredoka', cursive;
-      font-size: 1.6rem;
+      font-size: 1.65rem;
       font-weight: 800;
-      color: #0f172a;
+      color: #1e293b;
     }
+
     .node-label {
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       font-weight: 700;
       color: #64748b;
-      text-transform: uppercase;
     }
+
     .flight-line-wrap {
       flex: 1;
+      margin: 0 16px;
       position: relative;
-      margin: 0 14px;
-      height: 40px;
+      height: 36px;
     }
+
     .flight-svg-path {
       width: 100%;
       height: 100%;
     }
+
     .moving-plane-dot {
       position: absolute;
-      top: 4px;
-      font-size: 20px;
-      animation: planeFlyLine 3.6s ease-in-out infinite alternate;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      font-size: 18px;
+      animation: planeFlyAlong 4s infinite ease-in-out;
     }
-    @keyframes planeFlyLine {
-      0% { left: 4%; transform: translateY(12px) rotate(0deg); }
-      50% { left: 48%; transform: translateY(-4px) rotate(6deg); }
-      100% { left: 90%; transform: translateY(12px) rotate(12deg); }
+
+    @keyframes planeFlyAlong {
+      0% { left: 0%; transform: translateY(-50%) rotate(0deg); }
+      50% { left: 50%; transform: translateY(-80%) rotate(5deg); }
+      100% { left: 90%; transform: translateY(-50%) rotate(0deg); }
     }
 
     .pass-grid-info {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 14px 0;
+      padding: 12px;
       background: #f8fafc;
-      padding: 12px 14px;
       border-radius: var(--radius-md);
-      margin-bottom: 16px;
     }
+
     .pass-info-label {
-      font-size: 0.68rem;
-      font-weight: 700;
+      font-size: 0.7rem;
       color: #94a3b8;
-      text-transform: uppercase;
+      font-weight: 800;
     }
+
     .pass-info-val {
       font-size: 0.88rem;
-      font-weight: 700;
+      font-weight: 800;
       color: #1e293b;
+    }
+
+    .pass-stamp-approved {
+      display: inline-block;
+      border: 2.5px solid #16a34a;
+      color: #16a34a;
+      font-weight: 800;
+      font-size: 0.88rem;
+      padding: 5px 14px;
+      border-radius: 8px;
+      transform: rotate(-6deg);
+      text-transform: uppercase;
+      box-shadow: 0 2px 8px rgba(22, 163, 74, 0.15);
+      margin-top: 10px;
     }
 
     .pass-quote {
       font-size: 0.95rem;
-      font-weight: 600;
-      color: #334155;
-      text-align: center;
-      padding: 6px 10px;
+      font-weight: 700;
+      color: #0369a1;
+      margin-top: 14px;
+      line-height: 1.45;
     }
 
-    /* Perforation Cut */
-    .pass-perforation {
-      position: relative;
-      height: 16px;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .pass-perforation::before {
-      content: '';
-      position: absolute;
-      left: 14px;
-      right: 14px;
-      top: 50%;
-      border-top: 2px dashed #cbd5e1;
-    }
-    .notch-left, .notch-right {
-      width: 18px;
-      height: 18px;
-      background: var(--bg-gradient);
-      border-radius: 50%;
-      position: absolute;
-      top: -1px;
-    }
-    .notch-left { left: -9px; }
-    .notch-right { right: -9px; }
-
-    .pass-footer {
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #fff;
-    }
-    .stamp-approved {
-      border: 2px solid #16a34a;
-      color: #16a34a;
-      font-weight: 800;
-      font-size: 0.85rem;
-      padding: 4px 12px;
-      border-radius: 8px;
-      transform: rotate(-7deg);
-      text-transform: uppercase;
-      box-shadow: 0 2px 6px rgba(22, 163, 74, 0.15);
-    }
-
-    /* ==========================================================
-       11. TRAVEL WISHES: BUCKET LIST
-       ========================================================== */
+    /* Travel Bucket List */
     .bucket-items-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
       margin: 14px 0 16px;
     }
+
     .bucket-item {
       background: #ffffff;
       border: 1.5px solid #e2e8f0;
@@ -1263,12 +1511,14 @@
       gap: 12px;
       cursor: pointer;
       user-select: none;
-      transition: all 0.25s ease;
+      transition: all 0.22s ease;
     }
+
     .bucket-item:hover {
       border-color: var(--sky-blue);
       background: #f0f9ff;
     }
+
     .bucket-checkbox {
       width: 24px;
       height: 24px;
@@ -1282,142 +1532,187 @@
       transition: all 0.2s ease;
       flex-shrink: 0;
     }
+
     .bucket-item.checked .bucket-checkbox {
       background: #0284c7;
       border-color: #0284c7;
       color: #fff;
     }
+
     .bucket-item.checked {
       background: #f0fdf4;
       border-color: #86efac;
     }
+
     .bucket-item.checked .bucket-title-text {
       color: #166534;
       font-weight: 700;
+      text-decoration: line-through;
     }
+
     .bucket-title-text {
       font-size: 0.95rem;
       font-weight: 600;
       color: #334155;
     }
+
     .bucket-blessing-line {
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       font-weight: 700;
       color: #0369a1;
       text-align: center;
       padding: 6px 0;
     }
 
-    /* ==========================================================
-       12. PERSONAL LETTER (HANDWRITTEN STYLE)
-       ========================================================== */
+    /* =========================================================================
+       12. PAGE 6: LETTER (#letter)
+       ========================================================================= */
     .letter-card {
-      background: #fffef9;
+      background: #fffef8;
       border: 2px solid #fae8b4;
       border-radius: var(--radius-xl);
-      padding: 30px 24px 26px;
-      box-shadow: 0 14px 34px rgba(217, 119, 6, 0.08);
+      padding: 34px 24px 28px;
+      box-shadow: 0 16px 40px rgba(217, 119, 6, 0.1);
       position: relative;
     }
+
     .airmail-header-border {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 7px;
-      background: repeating-linear-gradient(45deg, #ef4444, #ef4444 14px, #ffffff 14px, #ffffff 28px, #3b82f6 28px, #3b82f6 42px, #ffffff 42px, #ffffff 56px);
-      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    }
-    .letter-stamp-box {
-      position: absolute;
-      top: 18px;
-      right: 20px;
-      border: 1.5px dashed #d97706;
-      border-radius: 8px;
-      padding: 6px 10px;
-      text-align: center;
-      font-size: 0.72rem;
-      font-weight: 800;
-      color: #b45309;
-      background: #fffbeb;
-      transform: rotate(4deg);
-    }
-    .letter-body-text {
-      font-family: 'Caveat', cursive;
-      font-size: 1.45rem;
-      line-height: 1.6;
-      color: #2b2024;
-      margin-top: 18px;
-      white-space: pre-line;
+      height: 8px;
+      background: repeating-linear-gradient(
+        -45deg,
+        #ef4444, #ef4444 12px,
+        #ffffff 12px, #ffffff 18px,
+        #3b82f6 18px, #3b82f6 30px,
+        #ffffff 30px, #ffffff 36px
+      );
+      border-top-left-radius: var(--radius-xl);
+      border-top-right-radius: var(--radius-xl);
     }
 
-    /* ==========================================================
-       13. FINALE SECTION & FIREWORKS
-       ========================================================== */
-    .finale-ticket-card {
-      background: linear-gradient(135deg, #fef3c7, #fff1f2);
-      border: 2px dashed #f43f5e;
-      text-align: center;
-      padding: 28px 22px;
-    }
-    .finale-ticket-badge {
-      display: inline-block;
-      background: #ffe4e6;
-      color: #e11d48;
+    .letter-stamp-vintage {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      border: 2px dashed #d97706;
+      padding: 6px 10px;
+      font-size: 0.76rem;
       font-weight: 800;
-      font-size: 0.8rem;
-      padding: 4px 14px;
-      border-radius: 20px;
+      color: #d97706;
+      transform: rotate(5deg);
+      border-radius: 4px;
+      background: #fffbeb;
+    }
+
+    .letter-body-text {
+      font-family: 'Caveat', cursive;
+      font-size: 1.48rem;
+      line-height: 1.6;
+      color: #2b1f1d;
+      margin-top: 14px;
+    }
+
+    .letter-paragraph {
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .letter-paragraph.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =========================================================================
+       13. PAGE 7: FINALE (#finale)
+       ========================================================================= */
+    .ticket-card {
+      background: linear-gradient(135deg, #fff5f7, #ffffff);
+      border: 2.5px solid #fecdd3;
+      border-radius: var(--radius-xl);
+      padding: 30px 22px;
+      text-align: center;
+      box-shadow: 0 16px 42px rgba(244, 63, 94, 0.15);
+      position: relative;
+    }
+
+    .ticket-punch-hole-left, .ticket-punch-hole-right {
+      position: absolute;
+      top: 50%;
+      width: 22px;
+      height: 22px;
+      background: #fbf8fd;
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+
+    .ticket-punch-hole-left { left: -12px; }
+    .ticket-punch-hole-right { right: -12px; }
+
+    .ticket-icon {
+      font-size: 52px;
       margin-bottom: 10px;
     }
+
     .finale-title {
-      font-size: 1.55rem;
+      font-size: 1.62rem;
       font-weight: 800;
       color: #9f1239;
       margin-bottom: 8px;
     }
+
     .finale-promise {
-      font-size: 0.98rem;
+      font-size: 1.02rem;
       font-weight: 600;
       color: #881337;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
+      line-height: 1.5;
     }
+
     .surprise-trigger-btn {
       background: linear-gradient(135deg, #f43f5e, #be185d);
       color: #fff;
       border: none;
-      padding: 14px 30px;
-      border-radius: 30px;
+      padding: 16px 34px;
+      border-radius: 35px;
       font-family: 'Fredoka', cursive;
-      font-size: 1.12rem;
+      font-size: 1.2rem;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 12px 28px rgba(244, 63, 94, 0.35);
+      box-shadow: 0 12px 30px rgba(244, 63, 94, 0.38);
       transition: all 0.25s ease;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
+
     .surprise-trigger-btn:hover {
       transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 16px 32px rgba(244, 63, 94, 0.45);
+      box-shadow: 0 16px 36px rgba(244, 63, 94, 0.48);
     }
 
     /* Grand Finale Modal */
     #grandModal {
       position: fixed;
       inset: 0;
-      background: rgba(15, 10, 25, 0.88);
-      backdrop-filter: blur(10px);
+      background: rgba(15, 10, 25, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       z-index: 10005;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
     }
+
     #grandModal.active {
       display: flex;
     }
+
     .grand-modal-card {
       background: linear-gradient(135deg, #ffffff, #fff5f7);
       border-radius: var(--radius-xl);
@@ -1428,21 +1723,19 @@
       position: relative;
       border: 2px solid rgba(255, 255, 255, 0.9);
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
-      animation: modalPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: modalPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+
     @keyframes modalPop {
       0% { transform: scale(0.85); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
+
     .grand-modal-cake {
       font-size: 54px;
       margin-bottom: 8px;
-      animation: bounceCake 2s infinite ease-in-out;
     }
-    @keyframes bounceCake {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
+
     .grand-modal-title {
       font-size: 1.85rem;
       font-weight: 800;
@@ -1451,86 +1744,27 @@
       -webkit-text-fill-color: transparent;
       margin-bottom: 12px;
     }
+
     .grand-modal-msg {
       font-size: 1.05rem;
       font-weight: 600;
       color: #4a2840;
-      line-height: 1.5;
+      line-height: 1.55;
       margin-bottom: 22px;
     }
+
     .grand-modal-close {
       background: linear-gradient(135deg, var(--blush-pink), var(--lavender));
       color: #fff;
       border: none;
-      padding: 11px 26px;
-      border-radius: 25px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .grand-modal-close:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(157, 114, 255, 0.3);
-    }
-
-    .grand-modal-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 14px;
-      align-items: center;
-    }
-
-    .grand-fireworks-btn {
-      background: linear-gradient(135deg, #f59e0b, #ec4899);
-      color: #fff;
-      border: none;
-      padding: 12px 26px;
-      border-radius: 25px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 8px 22px rgba(236, 72, 153, 0.35);
-      transition: all 0.25s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .grand-fireworks-btn:hover {
-      transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 12px 28px rgba(236, 72, 153, 0.5);
-    }
-
-    .finale-btn-group {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 6px;
-    }
-
-    .fireworks-toggle-btn {
-      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-      color: #fff;
-      border: none;
-      padding: 14px 26px;
+      padding: 12px 28px;
       border-radius: 30px;
-      font-family: 'Fredoka', cursive;
-      font-size: 1.08rem;
-      font-weight: 700;
+      font-weight: 800;
+      font-size: 1rem;
       cursor: pointer;
-      box-shadow: 0 10px 24px rgba(59, 130, 246, 0.3);
-      transition: all 0.25s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .fireworks-toggle-btn:hover {
-      transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 14px 28px rgba(59, 130, 246, 0.4);
     }
 
+    /* Fixed Canvases */
     #confettiCanvas {
       position: fixed;
       inset: 0;
@@ -1544,50 +1778,93 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 10006; /* Above the modal backdrop for super vibrant explosions */
+      z-index: 10006;
       width: 100%;
       height: 100%;
     }
 
-    /* Footer */
     .page-footer {
       text-align: center;
       color: var(--text-muted);
       font-size: 0.84rem;
-      margin-top: 36px;
+      margin-top: 28px;
       font-weight: 600;
     }
   </style>
 </head>
-<body>
+
+<body class="mood-sunny">
 
   <!-- Hidden HTML5 Audio Element for custom mp3 -->
   <audio id="bgMusicElement" preload="auto" loop></audio>
 
-  <!-- Sky background floating clouds and airplanes -->
+  <!-- Sky background floating clouds, airplanes & night stars -->
   <div class="sky-bg">
     <div class="cloud cloud-1"></div>
     <div class="cloud cloud-2"></div>
     <div class="cloud cloud-3"></div>
     <div class="sky-plane">✈️</div>
+
+    <div class="night-stars">
+      <div class="star">✨</div>
+      <div class="star">⭐</div>
+      <div class="star">✨</div>
+      <div class="star">⭐</div>
+      <div class="star">✨</div>
+      <div class="star">🌙</div>
+    </div>
   </div>
 
-  <!-- Canvas for Confetti & Fireworks -->
+  <!-- Canvases for Confetti & Fireworks -->
   <canvas id="confettiCanvas"></canvas>
   <canvas id="fireworksCanvas"></canvas>
 
-  <!-- Floating Music Toggle Button -->
+  <!-- Floating Music Toggle Button (Available On All Pages) -->
   <button class="music-btn" id="musicToggleBtn" aria-label="Toggle background music">
     <span class="music-icon" id="musicBtnIcon">🎵</span>
     <span id="musicBtnLabel">Music</span>
   </button>
 
-  <!-- ==========================================================
-       SECTION 1: OPENING SCREEN (GIFT BOX)
-       ========================================================== -->
+  <!-- =========================================================================
+       NAVIGATION: FIXED BOTTOM TAB BAR (MOBILE) / FLOATING TOP NAV (DESKTOP)
+       ========================================================================= -->
+  <nav class="site-nav" id="mainNavBar">
+    <a href="#home" class="nav-item active" data-page="home">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Home</span>
+    </a>
+    <a href="#story" class="nav-item" data-page="story">
+      <span class="nav-icon">📖</span>
+      <span class="nav-label">Story</span>
+    </a>
+    <a href="#why" class="nav-item" data-page="why">
+      <span class="nav-icon">💖</span>
+      <span class="nav-label">Why</span>
+    </a>
+    <a href="#arcade" class="nav-item" data-page="arcade">
+      <span class="nav-icon">🎮</span>
+      <span class="nav-label">Arcade</span>
+    </a>
+    <a href="#journey" class="nav-item" data-page="journey">
+      <span class="nav-icon">✈️</span>
+      <span class="nav-label">Journey</span>
+    </a>
+    <a href="#letter" class="nav-item" data-page="letter">
+      <span class="nav-icon">💌</span>
+      <span class="nav-label">Letter</span>
+    </a>
+    <a href="#finale" class="nav-item" data-page="finale">
+      <span class="nav-icon">🎟️</span>
+      <span class="nav-label">Finale</span>
+    </a>
+  </nav>
+
+  <!-- =========================================================================
+       OPENING SCREEN: GIFT BOX UNWRAP (STARTS AUDIO ON USER TAP)
+       ========================================================================= -->
   <div id="openingScreen">
     <div class="opening-tag">SPECIAL DELIVERY • 8 OCTOBER ✈️</div>
-    
+
     <div class="gift-box-wrapper" id="giftBoxTrigger" role="button" aria-label="Tap to open gift box">
       <div class="gift-sparkles">
         <span class="sparkle-1">✨</span>
@@ -1603,330 +1880,337 @@
     </div>
 
     <div class="opening-prompt" id="giftOpenPrompt">Tap to open, Arpita 🎁</div>
-    <div class="opening-subtext">A 23rd birthday surprise by your younger, immature bestie, Bhavya 🐒✨</div>
+    <div class="opening-subtext">A 23rd birthday surprise from your best friend 🐒✨</div>
   </div>
 
-  <!-- ==========================================================
-       MAIN PAGE (REVEALED AFTER OPENING GIFT)
-       ========================================================== -->
-  <main id="mainPage">
+  <!-- =========================================================================
+       MULTI-PAGE APP CONTAINER (HASH ROUTED: ONLY 1 PAGE VISIBLE AT A TIME)
+       ========================================================================= -->
+  <div id="pageAppContainer">
 
-    <!-- SECTION 2: HERO SECTION -->
-    <section class="card hero-section">
-      <div class="hero-balloons">
-        <span class="balloon-anim">🎈</span>
-        <span class="balloon-anim">🎂</span>
-        <span class="balloon-anim">🎈</span>
-        <span class="balloon-anim">✈️</span>
-      </div>
-      <h1 class="hero-title" id="heroHeading">Happy 23rd Birthday, Arpita! 🎂</h1>
-      
-      <div class="hero-quote-box" id="heroQuote">
-        "From someone who has never met you but would still pick you as a best friend."
-        <div style="font-size: 0.82rem; margin-top: 6px; font-weight: 600; opacity: 0.88; font-style: italic;">
-          — By your younger, immature bestie, Bhavya 🐒
+    <!-- PAGE 1: HOME (#home) -->
+    <section class="page-view active" id="page-home">
+      <div class="card hero-section">
+        <div class="hero-balloons">
+          <span class="balloon-anim">🎈</span>
+          <span class="balloon-anim">🎂</span>
+          <span class="balloon-anim">🎈</span>
+          <span class="balloon-anim">✈️</span>
+        </div>
+        <h1 class="hero-title" id="heroHeading">Happy 23rd Birthday, Arpita! 🎂</h1>
+
+        <div class="hero-quote-box" id="heroQuote">
+          "From someone who has never met you but would still pick you as a best friend."
+        </div>
+
+        <div class="hero-weather-forecast">
+          <span>🌦️</span>
+          <span>Today's Special Forecast: 100% Sunshine, Snacks & Zero Drama</span>
+        </div>
+
+        <div>
+          <a href="#story" class="hero-action-btn">
+            <span>Start your journey ✈️</span>
+          </a>
         </div>
       </div>
 
-      <!-- Funny Birthday Banter Card -->
-      <div style="background: rgba(255,255,255,0.74); border: 1.5px dashed var(--blush-pink); border-radius: var(--radius-md); padding: 12px 16px; margin: 12px auto; max-width: 520px; font-size: 0.88rem; color: #4a2840; text-align: center;">
-        👵 <strong>Official 23rd Birthday Reality Check:</strong> Turning 23 means you're officially elderly now! Luckily, you have me around to keep your life noisy, chaotic, and completely immature.
-      </div>
-
-      <div class="hero-weather-forecast">
-        <span>🌦️</span>
-        <span id="heroWeatherText">Today's Special Forecast: 100% Sunshine, Snacks & Zero Drama</span>
-      </div>
-    </section>
-
-    <!-- SECTION 3: HOW WE MET (STEP-BY-STEP TIMELINE & DM CHAT) -->
-    <section class="card">
-      <div class="card-badge badge-purple">Origin Story 📸</div>
-      <h2 class="card-title">How We Met: Accidental Best Friends</h2>
-      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 18px;">
-        Proof that the best things in life arrive with zero master plan.
-      </p>
-
-      <div class="timeline">
-        <!-- Step 1 -->
-        <div class="timeline-step">
-          <div class="timeline-dot"></div>
-          <div class="timeline-step-title">Step 1: The Meme Comment 💬</div>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">
-            I commented on a random funny meme post on Instagram:
-          </p>
-          <div class="fake-comment-box">
-            <div class="comment-avatar" id="commentAvatarInitial">B</div>
-            <div>
-              <div class="comment-author" id="commentAuthorHandle">@bhavya (your future headache 🐒)</div>
-              <div class="comment-text" id="commentBodyText">"Why is this so painful and accurate lmao 😂😭"</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="timeline-step">
-          <div class="timeline-dot"></div>
-          <div class="timeline-step-title">Step 2: The Notification ❤️</div>
-          <div class="timeline-highlight-pill" id="timelineStep2Text">
-            "One like. Zero expectations. Accidental best friendship."
-          </div>
-          <div style="font-size: 0.78rem; color: #a21caf; margin-top: 5px; font-weight: 600;">
-            Arpita's first thought: "Who is this random kid?" 😂
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="timeline-step">
-          <div class="timeline-dot"></div>
-          <div class="timeline-step-title">Step 3: The Follow Request ✈️</div>
-          <div class="timeline-highlight-pill" id="timelineStep3Text">
-            "No plan, no strategy, just vibes."
-          </div>
-          <div style="font-size: 0.78rem; color: #0369a1; margin-top: 5px; font-weight: 600;">
-            100% confidence, 0% plan — the Bhavya guarantee! 🐒
-          </div>
-        </div>
-
-        <!-- Step 4 -->
-        <div class="timeline-step">
-          <div class="timeline-dot"></div>
-          <div class="timeline-step-title">Step 4: The First DM Chat 📱</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
-            The conversation that started it all:
-          </p>
-          
-          <div class="dm-mockup">
-            <div class="dm-header">
-              <div class="dm-avatar">A</div>
-              <div>
-                <div class="dm-name">Arpita Mahapatra</div>
-                <div class="dm-status">Active now • Bestie</div>
-              </div>
-            </div>
-
-            <!-- Me -->
-            <div class="chat-bubble bubble-me" id="dmBubble1">
-              "Are you from Germany?"
-            </div>
-
-            <!-- Arpita -->
-            <div class="chat-bubble bubble-arpita" id="dmBubble2">
-              "Haha no! 😂 Born and raised in India! Why, do I give off European weather vibes? 🇩🇪🌧️"
-            </div>
-
-            <!-- Me -->
-            <div class="chat-bubble bubble-me" id="dmBubble3">
-              "Hi, I'm <span class="sender-name-inline">[MY NAME]</span>… honestly I want to study in Germany and share my future plan with you!"
-            </div>
-
-            <!-- Step 5 Highlight Advice -->
-            <div class="bubble-highlight-advice" id="dmAdviceText">
-              "Never share your future plans with anyone."
-            </div>
-            <div class="advice-caption">
-              Arpita, protector of my dreams 🛡️ (Joke's on her, I didn't even have a backup plan anyway 😂)
-            </div>
-
-            <!-- Me End -->
-            <div class="chat-bubble bubble-me" id="dmBubbleEnd">
-              "Best random request I ever sent — and now you're stuck with an immature younger bestie forever! ✨🐒"
-            </div>
-          </div>
-        </div>
+      <div class="next-page-bar">
+        <a href="#story" class="btn-next-page">Next: Our Story 📖 →</a>
       </div>
     </section>
 
-    <!-- SECTION 4: THINGS I LOVE ABOUT YOU (6 TAPPABLE CARDS) -->
-    <section class="card">
-      <div class="card-badge badge-pink">Top Reasons 💖</div>
-      <h2 class="card-title">Things I Love About You</h2>
-      <p style="font-size: 0.9rem; color: var(--text-muted);">
-        Tap each card to reveal what makes you the absolute greatest best friend:
-      </p>
-
-      <div class="love-grid">
-        <!-- Card 1 -->
-        <div class="flip-card" onclick="toggleFlip(this)">
-          <div class="flip-card-inner">
-            <div class="flip-front">
-              <div class="flip-icon">🌸</div>
-              <div class="flip-title">You're Cute & Funny</div>
-              <div class="flip-hint">Tap to flip 🔄</div>
-            </div>
-            <div class="flip-back">
-              <div class="flip-back-text">
-                You bring effortless laughs without even trying. The world is 100x more fun with your commentary! (Even when our chats share exactly ONE collective brain cell 🧠🤣)
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="flip-card" onclick="toggleFlip(this)">
-          <div class="flip-card-inner">
-            <div class="flip-front">
-              <div class="flip-icon">☀️</div>
-              <div class="flip-title">Always Optimistic</div>
-              <div class="flip-hint">Tap to flip 🔄</div>
-            </div>
-            <div class="flip-back">
-              <div class="flip-back-text">
-                Even when things are rough, your positive energy finds the silver lining. A walking human ray of sunshine — though dealing with your chaotic younger bestie should earn you a trophy! 🏆☀️
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="flip-card" onclick="toggleFlip(this)">
-          <div class="flip-card-inner">
-            <div class="flip-front">
-              <div class="flip-icon">💖</div>
-              <div class="flip-title">A Real Friend</div>
-              <div class="flip-hint">Tap to flip 🔄</div>
-            </div>
-            <div class="flip-back">
-              <div class="flip-back-text">
-                Someone who actually listens, checks in, and cares deeply. Rare, genuine, and irreplaceable. Proof that distance can't beat our weird frequency! 💖
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="flip-card" onclick="toggleFlip(this)">
-          <div class="flip-card-inner">
-            <div class="flip-front">
-              <div class="flip-icon">👑</div>
-              <div class="flip-title">Queen of Mood Swings</div>
-              <div class="flip-hint">Tap to flip 🔄</div>
-            </div>
-            <div class="flip-back">
-              <div class="flip-back-text">
-                "Today's forecast: sunny, 70% chance of high drama, 100% emotional storm, clear skies by dinner. Accuracy: 100%." Don't worry, Bhavya has an umbrella ready! 🌦️☔
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 5 -->
-        <div class="flip-card" onclick="toggleFlip(this)">
-          <div class="flip-card-inner">
-            <div class="flip-front">
-              <div class="flip-icon">✈️</div>
-              <div class="flip-title">Professional Traveller</div>
-              <div class="flip-hint">Tap to flip 🔄</div>
-            </div>
-            <div class="flip-back">
-              <div class="flip-back-text">
-                "You collect places the way other people collect shoes." Born to fly and wander the globe! (Just don't forget to pack your younger bestie in your suitcase 🧳✈️)
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 6 -->
-        <div class="flip-card" onclick="toggleFlip(this)">
-          <div class="flip-card-inner">
-            <div class="flip-front">
-              <div class="flip-icon">🌦️</div>
-              <div class="flip-title">Future Meteorologist</div>
-              <div class="flip-hint">Tap to flip 🔄</div>
-            </div>
-            <div class="flip-back">
-              <div class="flip-back-text">
-                "You predict the weather for a living. I predict a legendary 23rd year for you." And I forecast zero escape from my annoying texts! 🌈⚡
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Interactive Bestie Banter Generator -->
-      <div style="margin-top: 24px; background: rgba(255,255,255,0.8); border: 1.5px dashed var(--lavender); border-radius: var(--radius-md); padding: 14px 16px; text-align: center; box-shadow: 0 4px 16px rgba(157, 114, 255, 0.08);">
-        <div style="font-weight: 700; color: var(--lavender); font-size: 0.92rem; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-          <span>🐒</span> Bhavya & Arpita's Chaotic Banter Dispenser <span>✨</span>
-        </div>
-        <p id="banterQuoteDisplay" style="font-size: 0.88rem; font-style: italic; color: #3b2848; min-height: 44px; display: flex; align-items: center; justify-content: center; margin: 8px 0; transition: opacity 0.2s ease;">
-          "Arpita: 'I am the mature older best friend.' — Bhavya: 'And other hilarious fairy tales you can tell yourself!'"
+    <!-- PAGE 2: OUR STORY (#story) -->
+    <section class="page-view" id="page-story">
+      <div class="card">
+        <div class="card-badge badge-purple">Origin Story 📸</div>
+        <h2 class="card-title">How We Met: Accidental Best Friends</h2>
+        <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 18px;">
+          Proof that the best friendships arrive with zero master plan.
         </p>
-        <button type="button" onclick="nextBanterQuote()" style="background: linear-gradient(135deg, var(--lavender), #7c3aed); color: white; border: none; padding: 7px 18px; border-radius: 20px; font-weight: 700; font-size: 0.82rem; cursor: pointer; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25); transition: transform 0.15s ease;">
-          🎲 Tap for Another Funny Quote
+
+        <div class="timeline">
+          <!-- Step 1 -->
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div class="timeline-step-title">Step 1: The Meme Comment 💬</div>
+            <p style="font-size: 0.88rem; color: var(--text-muted);">
+              I commented on a random funny meme post on Instagram:
+            </p>
+            <div class="fake-comment-box">
+              <div class="comment-avatar">B</div>
+              <div>
+                <div class="comment-author" id="commentAuthorHandle">@myhandle</div>
+                <div class="comment-text" id="commentBodyText">"Why is this so painful and accurate lmao 😂😭"</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div class="timeline-step-title">Step 2: The Notification ❤️</div>
+            <p style="font-size: 0.88rem; color: var(--text-muted);">
+              She liked my comment:
+            </p>
+            <div class="timeline-highlight-pill" id="timelineStep2Text">
+              "One like. Zero expectations. Accidental best friendship."
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div class="timeline-step-title">Step 3: The Follow Request ✈️</div>
+            <p style="font-size: 0.88rem; color: var(--text-muted);">
+              I randomly sent her a follow request:
+            </p>
+            <div class="timeline-highlight-pill" id="timelineStep3Text">
+              "No plan, no strategy, just vibes."
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="timeline-step">
+            <div class="timeline-dot"></div>
+            <div class="timeline-step-title">Step 4: The First DM Chat 📱</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
+              The chat bubbles that started our friendship:
+            </p>
+
+            <div class="dm-mockup">
+              <div class="dm-header">
+                <div class="dm-avatar">A</div>
+                <div>
+                  <div class="dm-name">Arpita Mahapatra</div>
+                  <div class="dm-status">Active now • Bestie</div>
+                </div>
+              </div>
+
+              <!-- Me -->
+              <div class="chat-bubble bubble-me" id="dmBubble1">
+                "Are you from Germany?"
+              </div>
+
+              <!-- Arpita -->
+              <div class="chat-bubble bubble-arpita" id="dmBubble2">
+                "Haha no! 😂 Born and raised in India! Why, do I give off European weather vibes? 🇩🇪🌧️"
+              </div>
+
+              <!-- Me -->
+              <div class="chat-bubble bubble-me" id="dmBubble3">
+                "Hi, I'm <span class="sender-name-inline">[MY NAME]</span>… honestly I want to study in Germany and share my future plan with you!"
+              </div>
+
+              <!-- Step 5 Highlight Advice -->
+              <div class="bubble-highlight-advice" id="dmAdviceText">
+                "Never share your future plans with anyone."
+              </div>
+              <div class="advice-caption">
+                Arpita, protector of my dreams 🛡️ (she was right, and I still listen)
+              </div>
+
+              <!-- Me End -->
+              <div class="chat-bubble bubble-me" id="dmBubbleEnd">
+                "Best random request I ever sent."
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="next-page-bar">
+        <a href="#why" class="btn-next-page">Next: Why You're Awesome 💖 →</a>
+      </div>
+    </section>
+
+    <!-- PAGE 3: WHY YOU'RE AWESOME (#why) -->
+    <section class="page-view" id="page-why">
+      <!-- Section A: 6 Tappable Cards -->
+      <div class="card">
+        <div class="card-badge badge-pink">Things I Love About You 💖</div>
+        <h2 class="card-title">Why You're Awesome</h2>
+        <p style="font-size: 0.92rem; color: var(--text-muted);">
+          Tap each card to reveal what makes you such an incredible best friend:
+        </p>
+
+        <div class="love-grid">
+          <!-- Card 1 -->
+          <div class="flip-card" onclick="toggleFlip(this)">
+            <div class="flip-card-inner">
+              <div class="flip-front">
+                <div class="flip-icon">🌸</div>
+                <div class="flip-title">You're Cute & Funny</div>
+                <div class="flip-hint">Tap to reveal 🔄</div>
+              </div>
+              <div class="flip-back">
+                <div class="flip-back-text">
+                  Effortless humor, contagious smiles, and the best jokes. Conversations with you make any day lighter and brighter!
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="flip-card" onclick="toggleFlip(this)">
+            <div class="flip-card-inner">
+              <div class="flip-front">
+                <div class="flip-icon">☀️</div>
+                <div class="flip-title">Always Optimistic</div>
+                <div class="flip-hint">Tap to reveal 🔄</div>
+              </div>
+              <div class="flip-back">
+                <div class="flip-back-text">
+                  Even when things are rough, your positive mindset finds the sunny side of every cloud. A true ray of light!
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="flip-card" onclick="toggleFlip(this)">
+            <div class="flip-card-inner">
+              <div class="flip-front">
+                <div class="flip-icon">💖</div>
+                <div class="flip-title">A Real Friend</div>
+                <div class="flip-hint">Tap to reveal 🔄</div>
+              </div>
+              <div class="flip-back">
+                <div class="flip-back-text">
+                  Someone who genuinely cares, checks in, and listens. In a world full of superficial connections, you are real.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="flip-card" onclick="toggleFlip(this)">
+            <div class="flip-card-inner">
+              <div class="flip-front">
+                <div class="flip-icon">👑</div>
+                <div class="flip-title">Queen of Mood Swings</div>
+                <div class="flip-hint">Tap to reveal 🔄</div>
+              </div>
+              <div class="flip-back">
+                <div class="flip-back-text">
+                  "Today's forecast: sunny, 70% chance of drama, clear skies by evening. Accuracy: 100%." 🌦️⚡
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="flip-card" onclick="toggleFlip(this)">
+            <div class="flip-card-inner">
+              <div class="flip-front">
+                <div class="flip-icon">✈️</div>
+                <div class="flip-title">Professional Traveller</div>
+                <div class="flip-hint">Tap to reveal 🔄</div>
+              </div>
+              <div class="flip-back">
+                <div class="flip-back-text">
+                  "You collect places the way other people collect shoes." Born to explore new horizons and wander the globe! 🧳✈️
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="flip-card" onclick="toggleFlip(this)">
+            <div class="flip-card-inner">
+              <div class="flip-front">
+                <div class="flip-icon">🌦️</div>
+                <div class="flip-title">Future Meteorologist</div>
+                <div class="flip-hint">Tap to reveal 🔄</div>
+              </div>
+              <div class="flip-back">
+                <div class="flip-back-text">
+                  "You predict the weather for a living. I predict a great year for you." 🌈🌤️
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section B: Foodie Menu Card -->
+      <div class="card menu-card">
+        <div class="menu-header-badge">Birthday Feast 🍛</div>
+        <h2 class="menu-title" id="foodMenuTitle">Arpita's Official Birthday Menu: Biryani. Unlimited. 🍛</h2>
+        <p class="menu-subline" id="foodMenuSubline">
+          Foodie level: expert. I owe you a real biryani the day we meet.
+        </p>
+
+        <button class="biryani-hero-btn" id="rainFoodBtn">
+          <span>Make It Rain Biryani! 🍲✨</span>
         </button>
+
+        <div class="biryani-counter" id="biryaniCounterText">Plates served so far: 0 😋</div>
+      </div>
+
+      <div class="next-page-bar">
+        <a href="#arcade" class="btn-next-page">Next: Birthday Arcade 🎮 →</a>
       </div>
     </section>
 
-    <!-- SECTION 5: FOODIE SECTION -->
-    <section class="card menu-card">
-      <div class="menu-header-badge">Royal Treat Notification 🍛</div>
-      <h2 class="menu-title" id="foodMenuTitle">Arpita's Official Birthday Menu: Biryani. Unlimited. 🍛</h2>
-      <p class="menu-subline" id="foodMenuSubline">
-        Foodie level: expert. I owe you a real biryani the day we meet.
-      </p>
+    <!-- PAGE 4: ARCADE (#arcade) -->
+    <section class="page-view" id="page-arcade">
+      <div class="card">
+        <div class="card-badge badge-purple">Mini Games Zone 🎮</div>
+        <h2 class="card-title">Arpita's Birthday Arcade 🎮</h2>
+        <p style="font-size: 0.92rem; color: var(--text-muted);">
+          Tap a game card to play! Optimized for phones with smooth touch controls:
+        </p>
 
-      <div style="background: rgba(254, 243, 199, 0.85); border: 1.5px dashed #f59e0b; border-radius: var(--radius-md); padding: 10px 14px; margin: 12px auto; font-size: 0.86rem; color: #92400e; text-align: center; max-width: 460px;">
-        🍗 <strong>Friendship Rule #1:</strong> "There is technically no 'WE' in Biryani, but as your younger immature bestie, I strictly demand you save me the chicken leg piece the day we meet!" 😋
+        <div class="arcade-hub-grid">
+          <!-- Game 1 Trigger -->
+          <div class="game-trigger-card" onclick="openArcadeGame('catcher')">
+            <div>
+              <div class="game-icon-large">🍛☁️</div>
+              <div class="game-card-name">Biryani Catcher</div>
+              <div class="game-card-desc">Catch falling biryani & cakes, dodge storm clouds!</div>
+            </div>
+            <div class="game-play-badge">Play 🕹️</div>
+          </div>
+
+          <!-- Game 2 Trigger -->
+          <div class="game-trigger-card" onclick="openArcadeGame('memory')">
+            <div>
+              <div class="game-icon-large">⛅🎴</div>
+              <div class="game-card-name">Weather Match</div>
+              <div class="game-card-desc">Match 6 weather pairs before the timer runs out!</div>
+            </div>
+            <div class="game-play-badge">Play 🕹️</div>
+          </div>
+
+          <!-- Game 3 Trigger -->
+          <div class="game-trigger-card" onclick="openArcadeGame('quiz')">
+            <div>
+              <div class="game-icon-large">💬🏆</div>
+              <div class="game-card-name">How Well Do You Know Me?</div>
+              <div class="game-card-desc">5-question multiple choice bestie quiz!</div>
+            </div>
+            <div class="game-play-badge">Play 🕹️</div>
+          </div>
+        </div>
       </div>
 
-      <button class="biryani-hero-btn" id="rainFoodBtn">
-        <span>Order Emergency Biryani Shower 🍲✨</span>
-      </button>
-
-      <div class="biryani-counter" id="biryaniCounterText">Plates served so far: 0 😋</div>
-    </section>
-
-    <!-- SECTION 6: MINI GAMES ZONE (ARPITA'S BIRTHDAY ARCADE) -->
-    <section class="card">
-      <div class="card-badge badge-purple">Mini Games Zone 🎮</div>
-      <h2 class="card-title">Arpita's Birthday Arcade 🎮</h2>
-      <p style="font-size: 0.9rem; color: var(--text-muted);">
-        Tap any game to play! Smooth on phone and completely scroll-locked:
-      </p>
-
-      <div class="arcade-hub-grid">
-        <!-- Game 1 Trigger -->
-        <div class="game-trigger-card" onclick="openArcadeGame('catcher')">
-          <div>
-            <div class="game-icon-large">🍛☁️</div>
-            <div class="game-card-name">Biryani Catcher</div>
-            <div class="game-card-desc">Catch falling biryani & cakes, dodge storm clouds!</div>
-          </div>
-          <div class="game-play-badge">Play Game 🕹️</div>
-        </div>
-
-        <!-- Game 2 Trigger -->
-        <div class="game-trigger-card" onclick="openArcadeGame('memory')">
-          <div>
-            <div class="game-icon-large">⛅🎴</div>
-            <div class="game-card-name">Weather Match</div>
-            <div class="game-card-desc">Match 6 weather pairs before the storm rolls in!</div>
-          </div>
-          <div class="game-play-badge">Play Game 🕹️</div>
-        </div>
-
-        <!-- Game 3 Trigger -->
-        <div class="game-trigger-card" onclick="openArcadeGame('quiz')">
-          <div>
-            <div class="game-icon-large">💬🏆</div>
-            <div class="game-card-name">How Well Do You Know Me?</div>
-            <div class="game-card-desc">5-question multiple choice bestie quiz!</div>
-          </div>
-          <div class="game-play-badge">Play Game 🕹️</div>
-        </div>
+      <div class="next-page-bar">
+        <a href="#journey" class="btn-next-page">Next: Our Journey ✈️ →</a>
       </div>
     </section>
 
-    <!-- SECTION 7: DISTANCE SECTION (BOARDING PASS) -->
-    <section class="boarding-pass">
-      <div class="pass-header">
-        <div class="pass-flight-title">
-          <span>✈️</span> BESTIE AIRWAYS • FLIGHT-2308
+    <!-- PAGE 5: JOURNEY (#journey) -->
+    <section class="page-view" id="page-journey">
+      <!-- Boarding Pass Card -->
+      <div class="card boarding-pass">
+        <div class="pass-header">
+          <div class="pass-flight-title">
+            <span>✈️</span> BESTIE AIRWAYS • FLIGHT-2308
+          </div>
+          <div>PRIORITY BOARDING</div>
         </div>
-        <div>PRIORITY BOARDING</div>
-      </div>
 
-      <div class="pass-body">
         <div class="flight-path-visual">
           <div class="node-city">
             <div class="node-code">ME</div>
@@ -1935,7 +2219,7 @@
 
           <div class="flight-line-wrap">
             <svg class="flight-svg-path" viewBox="0 0 200 40" preserveAspectRatio="none">
-              <path d="M 10 20 Q 100 -6 190 20" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="6,6"/>
+              <path d="M 10 20 Q 100 -6 190 20" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="6,6" />
             </svg>
             <div class="moving-plane-dot">✈️</div>
           </div>
@@ -1949,15 +2233,15 @@
         <div class="pass-grid-info">
           <div>
             <div class="pass-info-label">PASSENGER</div>
-            <div class="pass-info-val">Arpita M. (Elder Sister Vibes 👑)</div>
+            <div class="pass-info-val">Arpita Mahapatra 🌟</div>
           </div>
           <div>
             <div class="pass-info-label">ISSUED BY</div>
-            <div class="pass-info-val">Bhavya (Immature Bestie 🐒)</div>
+            <div class="pass-info-val" id="passIssuedByName">[MY NAME]</div>
           </div>
           <div>
             <div class="pass-info-label">DESTINATION</div>
-            <div class="pass-info-val">Chapter 23 🌟</div>
+            <div class="pass-info-val">Chapter 23 🎂</div>
           </div>
           <div>
             <div class="pass-info-label">SEAT</div>
@@ -1965,170 +2249,153 @@
           </div>
         </div>
 
-        <div class="pass-quote" id="distanceQuoteText">
-          "One screen, a few hundred km, and zero shared brain cells. Distance means nothing when you have an immature bestie annoying you daily."
+        <div class="pass-quote">
+          "One screen, a few hundred km, zero reasons to stop talking."
+        </div>
+
+        <div>
+          <div class="pass-stamp-approved">Friendship: Approved ✅</div>
         </div>
       </div>
 
-      <div class="pass-perforation">
-        <div class="notch-left"></div>
-        <div class="notch-right"></div>
-      </div>
+      <!-- Bucket List Card -->
+      <div class="card" style="margin-top: 18px;">
+        <div class="card-badge badge-blue">Wanderlust Goals 🗺️</div>
+        <h2 class="card-title">Arpita's Travel Bucket List</h2>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">
+          Tap each goal to tick it off your list:
+        </p>
 
-      <div class="pass-footer">
-        <div style="font-size: 0.82rem; font-weight: 700; color: #64748b;">
-          BARCODE: 23-OCT-ARPITA-BESTIE
+        <div class="bucket-items-list">
+          <div class="bucket-item" onclick="toggleBucketItem(this)">
+            <div class="bucket-checkbox">✓</div>
+            <div class="bucket-title-text">Beach trip 🏖️</div>
+          </div>
+          <div class="bucket-item" onclick="toggleBucketItem(this)">
+            <div class="bucket-checkbox">✓</div>
+            <div class="bucket-title-text">Mountains ⛰️</div>
+          </div>
+          <div class="bucket-item" onclick="toggleBucketItem(this)">
+            <div class="bucket-checkbox">✓</div>
+            <div class="bucket-title-text">A new country 🌍</div>
+          </div>
+          <div class="bucket-item" onclick="toggleBucketItem(this)">
+            <div class="bucket-checkbox">✓</div>
+            <div class="bucket-title-text">A road trip with snacks 🚗</div>
+          </div>
+          <div class="bucket-item" onclick="toggleBucketItem(this)">
+            <div class="bucket-checkbox">✓</div>
+            <div class="bucket-title-text">Meeting my Insta bestie someday 😌</div>
+          </div>
         </div>
-        <div class="stamp-approved">
-          Friendship: Approved ✅
-        </div>
-      </div>
-    </section>
 
-    <!-- SECTION 8: TRAVEL WISHES (BUCKET LIST) -->
-    <section class="card">
-      <div class="card-badge badge-blue">Wanderlust Journal 🗺️</div>
-      <h2 class="card-title">Arpita's Travel Bucket List</h2>
-      <p style="font-size: 0.9rem; color: var(--text-muted);">
-        Tap to check off where this 23rd year is going to take you:
-      </p>
-
-      <div class="bucket-items-list" id="bucketItemsContainer">
-        <div class="bucket-item" onclick="toggleBucketItem(this)">
-          <div class="bucket-checkbox">✓</div>
-          <div class="bucket-title-text">Beach trip 🏖️</div>
-        </div>
-        <div class="bucket-item" onclick="toggleBucketItem(this)">
-          <div class="bucket-checkbox">✓</div>
-          <div class="bucket-title-text">Mountains ⛰️</div>
-        </div>
-        <div class="bucket-item" onclick="toggleBucketItem(this)">
-          <div class="bucket-checkbox">✓</div>
-          <div class="bucket-title-text">A new country 🌍</div>
-        </div>
-        <div class="bucket-item" onclick="toggleBucketItem(this)">
-          <div class="bucket-checkbox">✓</div>
-          <div class="bucket-title-text">A road trip with snacks 🚗</div>
-        </div>
-        <div class="bucket-item" onclick="toggleBucketItem(this)">
-          <div class="bucket-checkbox">✓</div>
-          <div class="bucket-title-text">Meeting my chaotic younger Insta bestie Bhavya someday (and preparing to roast him in person) 😌🐒</div>
+        <div class="bucket-blessing-line">
+          "May this year take you to every place on your list."
         </div>
       </div>
 
-      <div class="bucket-blessing-line" id="bucketBlessingText">
-        "May this year take you to every airport on your Pinterest board — and to the cafe where Bhavya buys you biryani!"
+      <div class="next-page-bar">
+        <a href="#letter" class="btn-next-page">Next: A Letter For You 💌 →</a>
       </div>
     </section>
 
-    <!-- SECTION 9: PERSONAL LETTER (HANDWRITTEN STYLE) -->
-    <section class="letter-card">
-      <div class="airmail-header-border"></div>
-      <div class="letter-stamp-box">
-        <div>AIR MAIL</div>
-        <div>OCT 08</div>
+    <!-- PAGE 6: LETTER (#letter) -->
+    <section class="page-view" id="page-letter">
+      <div class="letter-card">
+        <div class="airmail-header-border"></div>
+        <div class="letter-stamp-vintage">AIRMAIL • 23RD BD</div>
+
+        <div class="card-badge badge-pink" style="margin-top: 6px;">Personal Letter 💌</div>
+
+        <!-- Exact Text Preserved Staggered Paragraph By Paragraph -->
+        <div class="letter-body-text" id="letterContainer">
+          <p class="letter-paragraph" data-step="1">Hey Arpita,</p>
+          <p class="letter-paragraph" data-step="2">Happy 23rd birthday! 🎉</p>
+          <p class="letter-paragraph" data-step="3">I still laugh when I think about how we started. I commented on a random meme, you liked it, and I sent you a request with zero plan. Somehow that became one of my best friendships, and we have never even met.</p>
+          <p class="letter-paragraph" data-step="4">Remember when I told you about my plan to study in Germany, and you said "never share your future plans with anyone"? You were right, and I still remember it. You care about me even when it's not your problem, and that's rare.</p>
+          <p class="letter-paragraph" data-step="5">You are funny, cute, always positive, and a little dramatic, and I wouldn't change any of it. Thank you for being a real friend and not just someone on my screen.</p>
+          <p class="letter-paragraph" data-step="6">I hope this year gives you great food, big trips and good weather, both outside and inside. Someday we will meet, and I'll owe you a biryani.</p>
+          <p class="letter-paragraph" data-step="7">Your bestie,</p>
+          <p class="letter-paragraph" data-step="8" id="letterSenderName">[YOUR NAME]</p>
+        </div>
       </div>
 
-      <div class="card-badge badge-pink" style="margin-top: 10px;">Personal Letter 💌</div>
-      
-      <!-- Exact Text Preserved as Requested -->
-      <div class="letter-body-text" id="handwrittenLetterBody">
-Hey Arpita,
-
-Happy 23rd birthday! 🎉
-
-I still laugh when I think about how we started. I commented on a random meme, you liked it, and I sent you a request with zero plan. Somehow that became one of my best friendships, and we have never even met.
-
-Remember when I told you about my plan to study in Germany, and you said "never share your future plans with anyone"? You were right, and I still remember it. You care about me even when it's not your problem, and that's rare.
-
-You are funny, cute, always positive, and a little dramatic, and I wouldn't change any of it. Thank you for being a real friend and not just someone on my screen.
-
-I hope this year gives you great food, big trips and good weather, both outside and inside. Someday we will meet, and I'll owe you a biryani.
-
-By your younger, immature bestie,
-Bhavya 🐒✨
+      <div class="next-page-bar">
+        <a href="#finale" class="btn-next-page">Next: One Last Surprise 🎟️ →</a>
       </div>
     </section>
 
-    <!-- SECTION 10: FINALE (PLANE TICKET & GRAND SURPRISE) -->
-    <section class="finale-ticket-card">
-      <div class="finale-ticket-badge">VIP BOARDING PASS 🎟️</div>
-      <h2 class="finale-title">One-Way Ticket To The Day We Finally Meet 🎟️</h2>
-      <p class="finale-promise">
-        "Someday we'll meet, and I'll bring the cake 🎂, the biryani 🍛, and 100 new terrible jokes to roast you with."
-      </p>
+    <!-- PAGE 7: FINALE (#finale) -->
+    <section class="page-view" id="page-finale">
+      <div class="ticket-card">
+        <div class="ticket-punch-hole-left"></div>
+        <div class="ticket-punch-hole-right"></div>
 
-      <div style="font-size: 0.82rem; color: #4a2840; margin-bottom: 14px; font-weight: 600; opacity: 0.88;">
-        ⚠️ <strong>Warning:</strong> Meeting your younger bestie in real life may cause uncontrollable laughing fits. Proceed with excitement! 🚀
-      </div>
+        <div class="ticket-icon">🎟️</div>
+        <h2 class="finale-title">One-Way Ticket To The Day We Finally Meet</h2>
+        <p class="finale-promise">
+          "Someday we'll meet, and I'll bring the cake 🎂 and the biryani."
+        </p>
 
-      <div class="finale-btn-group">
         <button class="surprise-trigger-btn" id="grandSurpriseBtn">
-          <span>One Last Surprise ✨</span>
-        </button>
-        <button class="fireworks-toggle-btn" id="toggleSkyFireworksBtn">
-          <span>🎆 Non-stop Fireworks Show</span>
+          <span>One last surprise ✨</span>
         </button>
       </div>
+
+      <div class="next-page-bar" style="margin-top: 22px;">
+        <a href="#home" class="btn-next-page" style="background: linear-gradient(135deg, #0284c7, #6366f1);">Back to start 🏠</a>
+      </div>
+
+      <footer class="page-footer">
+        <p>Crafted with love for Arpita Mahapatra • Happy 23rd Birthday 🎂✨</p>
+      </footer>
     </section>
 
-    <!-- Footer -->
-    <footer class="page-footer">
-      <p>Crafted with 100% pure chaos & love by your younger immature bestie, Bhavya 🐒 • 8 October 🎂</p>
-      <p style="font-size: 0.78rem; opacity: 0.8; margin-top: 4px;">Weather Forecast: Clear skies, zero drama & unlimited adventures ahead 🌦️✨</p>
-    </footer>
+  </div>
 
-  </main>
-
-  <!-- ==========================================================
-       ARCADE MODAL CONTAINER (FITS PHONE SCREEN & TOUCH LOCK)
-       ========================================================== -->
+  <!-- =========================================================================
+       ARCADE GAME POPUP MODAL (PHONE COMPACT & SCROLL-LOCKED)
+       ========================================================================= -->
   <div id="arcadeModal">
-    <div class="arcade-screen-box">
-      <!-- Arcade Navigation Header -->
-      <div class="arcade-nav-bar">
-        <button class="arcade-back-btn" onclick="closeArcadeGame()">
-          <span>←</span> Back to Arcade
-        </button>
-        <div class="arcade-active-title" id="arcadeGameTitle">Arcade Game</div>
+    <div class="arcade-box">
+      <div class="arcade-box-header">
+        <button class="arcade-back-btn" onclick="closeArcadeGame()">← Back to Arcade</button>
+        <span style="font-weight: 800; font-size: 0.95rem; color: #1e293b;" id="arcadeGameTitle">Arcade</span>
       </div>
 
-      <!-- GAME 1 VIEW: BIRYANI CATCHER -->
+      <!-- Game 1: Biryani Catcher Container -->
       <div id="gameCatcherContainer" style="display: none;">
-        <div class="catcher-stats-bar">
-          <div>Score: <span id="catcherScoreVal" style="color: #b45309;">0</span></div>
+        <div class="arcade-stats-bar">
+          <div>Score: <span id="catcherScoreVal" style="color: #ea580c;">0</span></div>
           <div>Time: <span id="catcherTimeVal" style="color: #0284c7;">30s</span></div>
           <div>Lives: <span id="catcherLivesVal">❤️❤️❤️</span></div>
         </div>
-        <canvas id="catcherCanvas" width="400" height="380"></canvas>
-        <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-top: 8px;">
-          Drag plate left/right on screen (or use arrow keys). Catch 🍛 (+1) & 🎂 (+3). Avoid ⛈️!
-        </p>
+        <canvas id="catcherCanvas"></canvas>
+        <div style="font-size: 0.78rem; color: #64748b; margin-top: 8px; font-weight: 600;">
+          Drag plate left & right to catch 🍛 (+1) & 🎂 (+3). Avoid ⛈️!
+        </div>
       </div>
 
-      <!-- GAME 2 VIEW: WEATHER MATCH -->
+      <!-- Game 2: Weather Match Container -->
       <div id="gameMemoryContainer" style="display: none;">
-        <div class="match-stats-bar">
-          <div>Moves: <span id="memoryMovesVal">0</span></div>
-          <div>Time: <span id="memoryTimerVal">0s</span></div>
-          <div>Pairs: <span id="memoryPairsVal">0/6</span></div>
+        <div class="arcade-stats-bar">
+          <div>Moves: <span id="memoryMovesVal" style="color: #7c3aed;">0</span></div>
+          <div>Time: <span id="memoryTimerVal" style="color: #0284c7;">0s</span></div>
+          <div>Pairs: <span id="memoryPairsVal" style="color: #16a34a;">0/6</span></div>
         </div>
-        <div class="weather-cards-grid" id="weatherCardsBoard">
-          <!-- 12 Cards Generated Dynamically -->
+        <div class="weather-grid-board" id="weatherCardsBoard">
+          <!-- 12 cards generated by JS -->
         </div>
-        <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center;">
-          Tap two cards to flip them. Match all 6 weather pairs!
-        </p>
       </div>
 
-      <!-- GAME 3 VIEW: HOW WELL DO YOU KNOW ME? -->
+      <!-- Game 3: Quiz Container -->
       <div id="gameQuizContainer" style="display: none;">
-        <div class="quiz-progress-bar-bg">
-          <div class="quiz-progress-bar-fill" id="quizProgressBar"></div>
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="quizProgressBar"></div>
         </div>
         <div class="quiz-q-num" id="quizQuestionNumber">Question 1 of 5</div>
         <div class="quiz-question-text" id="quizQuestionText">Question text here?</div>
-        
+
         <div class="quiz-options-list" id="quizOptionsContainer">
           <!-- Options generated dynamically -->
         </div>
@@ -2136,54 +2403,47 @@ Bhavya 🐒✨
         <div class="quiz-feedback-box" id="quizFeedbackText"></div>
       </div>
 
-      <!-- COMMON GAME OVER / RESULTS VIEW -->
-      <div id="gameResultContainer" class="game-result-container" style="display: none;">
-        <div class="result-icon" id="gameResultIcon">🏆</div>
-        <h3 class="result-title" id="gameResultTitle">Awesome Job!</h3>
-        <p class="result-msg" id="gameResultMsg">Message goes here</p>
-        <button class="arcade-action-btn" id="gameResultActionBtn">Play Again 🔄</button>
+      <!-- Universal Game Result Container -->
+      <div id="gameResultContainer" class="arcade-game-result" style="display: none;">
+        <div class="result-icon-big" id="gameResultIcon">🏆</div>
+        <h3 class="result-title" id="gameResultTitle">Game Finished!</h3>
+        <p class="result-msg" id="gameResultMsg">Great job!</p>
+        <button class="biryani-hero-btn" id="gameResultActionBtn" style="padding: 10px 24px;">
+          <span>Play Again 🔄</span>
+        </button>
       </div>
-
     </div>
   </div>
 
-  <!-- ==========================================================
-       FINALE MODAL (FIREWORKS & GRAND BIRTHDAY GREETING)
-       ========================================================== -->
+  <!-- =========================================================================
+       GRAND FINALE SURPRISE MODAL
+       ========================================================================= -->
   <div id="grandModal">
     <div class="grand-modal-card">
-      <div class="grand-modal-cake">🎂🎉✨</div>
+      <div class="grand-modal-cake">🎂✨</div>
       <h2 class="grand-modal-title">Happy Birthday, Arpita! 🎂🎉</h2>
       <p class="grand-modal-msg" id="grandModalMessage">
-        Happy 23rd Birthday, Arpita! 🎂✨<br><br>
-        Your official weather forecast for this year: 100% sunshine, unlimited plates of biryani, passport stamps from dreamy destinations, and zero drama (except the healthy dose of drama I supply).<br><br>
-        Thank you for being such an authentic, caring, and wonderful best friend across screens.<br><br>
-        <span style="display: block; margin-top: 10px; font-weight: 700; color: var(--lavender); font-size: 1.02rem;">
-          Love & unlimited chaos,<br>
-          By your younger, immature bestie, Bhavya 🐒💖
-        </span>
+        Happy Birthday, Arpita.<br><br>
+        Your forecast for this year: sunshine, snacks and adventures.<br><br>
+        Love,<br>
+        <strong id="modalSenderName">[YOUR NAME]</strong>
       </p>
-      <div class="grand-modal-buttons">
-        <button class="grand-fireworks-btn" id="launchMoreFireworksBtn">
-          <span>🎆 Launch Mega Fireworks Burst!</span>
-        </button>
-        <button class="grand-modal-close" id="grandModalCloseBtn">
-          Hug Through Screen 🫂✨
-        </button>
-      </div>
+
+      <button class="grand-modal-close" id="grandModalCloseBtn">
+        Close with a smile 😊
+      </button>
     </div>
   </div>
 
-  <!-- Falling food container -->
+  <!-- Falling food container for Biryani rain -->
   <div id="foodRainBox"></div>
 
-  <!-- ==========================================================
-       JAVASCRIPT & CONFIGURATION
-       ========================================================== -->
+  <!-- =========================================================================
+       JAVASCRIPT: CONFIGURATION, ROUTING, AUDIO, AND GAME LOGIC
+       ========================================================================= -->
   <script>
     /* =========================================================================
        CONFIGURATION VARIABLES (EASILY EDITABLE AT THE VERY TOP!)
-       Customize your name, audio file, chat replies, and quiz questions here.
        ========================================================================= */
     const CONFIG = {
       // 1. Audio File Configuration (plays on loop from gift box tap)
@@ -2196,29 +2456,28 @@ Bhavya 🐒✨
       TURNING_AGE: 23,
       BIRTHDAY_DATE: "8 October",
 
-      // SENDER NAME (Change this to your real name!)
+      // YOUR NAME (Change this to your real name!)
       YOUR_NAME: "Bhavya",
-      YOUR_INSTA_HANDLE: "@bhavya (your future headache 🐒)",
+      YOUR_INSTA_HANDLE: "@bhavya",
 
       // 3. Timeline Texts (Editable)
       MEME_COMMENT: "Why is this so painful and accurate lmao 😂😭",
       STEP_2_LINE: "One like. Zero expectations. Accidental best friendship.",
-      STEP_3_LINE: "No plan, no strategy, just pure chaotic vibes.",
-      
+      STEP_3_LINE: "No plan, no strategy, just vibes.",
+
       // DM Chat Bubbles (Editable)
       DM_ME_FIRST: "Are you from Germany?",
       // Playful reply from Arpita that a friendly girl would send to a stranger:
       DM_ARPITA_REPLY: "Haha no! 😂 Born and raised in India! Why, do I give off European weather vibes? 🇩🇪🌧️",
-      DM_ME_INTRO_PLAN: "Hi, I'm Bhavya… honestly I want to study in Germany and share my future plan with you!",
       DM_ARPITA_ADVICE: "Never share your future plans with anyone.",
-      DM_ME_FINAL: "Best random request I ever sent — and now you're stuck with an immature younger bestie forever! ✨🐒",
+      DM_ME_FINAL: "Best random request I ever sent.",
 
-      // 4. Game 3 Quiz Questions & Answers (Editable array with placeholders)
+      // 4. Game 3: Quiz Questions & Answers (Editable)
       QUIZ_QUESTIONS: [
         {
-          question: "What is my absolute favourite food?",
+          question: "What is my favourite food?",
           options: ["Biryani 🍛", "Pizza 🍕", "Burger 🍔", "Momos 🥟"],
-          correctIndex: 0 // Change if needed!
+          correctIndex: 0
         },
         {
           question: "Which country do I want to study in?",
@@ -2236,7 +2495,7 @@ Bhavya 🐒✨
           correctIndex: 0 // Answer: a funny meme
         },
         {
-          question: "What legendary advice did Arpita give me in our DM?",
+          question: "What advice did Arpita give me in our DM?",
           options: [
             "Never share your future plans with anyone 🤫",
             "Always study 12 hours a day 📚",
@@ -2249,39 +2508,93 @@ Bhavya 🐒✨
     };
 
     /* =========================================================================
-       BHAVYA & ARPITA BANTER QUOTES DISPENSER
+       PAGE ROUTER: HASH-BASED ROUTING (#home, #story, #why, #arcade, etc.)
+       Only ONE page visible at a time. Supports browser back/forward buttons!
        ========================================================================= */
-    const BANTER_QUOTES = [
-      "\"Arpita: 'I am the mature older best friend.' — Bhavya: 'And other hilarious fairy tales you can tell yourself!' 📖😂\"",
-      "\"Turning 23 means two things: you get back pain, and you have to tolerate your younger bestie for another whole year! 👵🐒\"",
-      "\"Meteorology forecast: high pressure system incoming. Bhavya says: that's just Arpita deciding what to order! 🌪️🍛\"",
-      "\"Best friends don't judge each other. They judge everyone else together across Instagram DMs! 🕵️‍♀️💬\"",
-      "\"Rule #1 of Biryani: If you love someone, you let them have the last bite. Which is why Bhavya is eating the whole pot! 🍛😋\"",
-      "\"Distance means so little when zero shared brain cells can travel at the speed of light! ⚡🧠\"",
-      "\"Arpita's Mood Forecast: 20% gentle breeze, 80% category 5 hurricane over minor inconveniences! 🌦️🌪️\"",
-      "\"Behind every calm, successful girl is a chaotic younger bestie spamming her with unhinged reels at 2 AM. 📱🐒\""
-    ];
-    let banterQuoteIndex = 0;
-    function nextBanterQuote() {
-      banterQuoteIndex = (banterQuoteIndex + 1) % BANTER_QUOTES.length;
-      const el = document.getElementById("banterQuoteDisplay");
-      if (el) {
-        el.style.opacity = '0';
-        setTimeout(() => {
-          el.textContent = BANTER_QUOTES[banterQuoteIndex];
-          el.style.opacity = '1';
-        }, 150);
+    const VALID_PAGES = ["home", "story", "why", "arcade", "journey", "letter", "finale"];
+
+    // Weather moods map per page
+    const PAGE_MOODS = {
+      home: "mood-sunny",
+      story: "mood-rainbow",
+      why: "mood-golden",
+      arcade: "mood-arcade",
+      journey: "mood-travel",
+      letter: "mood-night",
+      finale: "mood-sunset"
+    };
+
+    function getCurrentPageFromHash() {
+      const hash = window.location.hash.replace("#", "").toLowerCase().trim();
+      return VALID_PAGES.includes(hash) ? hash : "home";
+    }
+
+    function switchPage(pageName) {
+      if (!VALID_PAGES.includes(pageName)) pageName = "home";
+
+      // 1. Update active page view
+      document.querySelectorAll(".page-view").forEach(pv => {
+        pv.classList.remove("active");
+      });
+      const activeSection = document.getElementById(`page-${pageName}`);
+      if (activeSection) {
+        activeSection.classList.add("active");
       }
+
+      // 2. Update navigation active state
+      document.querySelectorAll(".site-nav .nav-item").forEach(link => {
+        if (link.getAttribute("data-page") === pageName) {
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+      });
+
+      // 3. Switch atmospheric weather background mood
+      document.body.className = PAGE_MOODS[pageName] || "mood-sunny";
+
+      // 4. Staggered letter paragraph animation trigger if navigating to letter
+      if (pageName === "letter") {
+        revealLetterParagraphs();
+      }
+
+      // 5. Scroll to top of page smoothly
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Handle hash change events (browser back/forward & user clicks)
+    window.addEventListener("hashchange", () => {
+      const targetPage = getCurrentPageFromHash();
+      switchPage(targetPage);
+    });
+
+    // Staggered reveal for letter paragraphs
+    function revealLetterParagraphs() {
+      const paras = document.querySelectorAll("#letterContainer .letter-paragraph");
+      paras.forEach((p, idx) => {
+        p.classList.remove("visible");
+        setTimeout(() => {
+          p.classList.add("visible");
+        }, idx * 240 + 150);
+      });
     }
 
     /* =========================================================================
-       INITIALIZE DYNAMIC CONTENT & DOM LABELS
+       INITIALIZE DOM TEXTS & LABELS FROM CONFIG
        ========================================================================= */
     document.addEventListener("DOMContentLoaded", () => {
-      // Apply Sender Names throughout the page
+      // Set sender names throughout
       document.querySelectorAll(".sender-name-inline").forEach(el => {
         el.textContent = CONFIG.YOUR_NAME;
       });
+      const letterSender = document.getElementById("letterSenderName");
+      if (letterSender) letterSender.textContent = CONFIG.YOUR_NAME;
+
+      const modalSender = document.getElementById("modalSenderName");
+      if (modalSender) modalSender.textContent = CONFIG.YOUR_NAME;
+
+      const passSender = document.getElementById("passIssuedByName");
+      if (passSender) passSender.textContent = `${CONFIG.YOUR_NAME} (Bestie)`;
 
       // Timeline labels
       document.getElementById("commentBodyText").textContent = `"${CONFIG.MEME_COMMENT}"`;
@@ -2300,11 +2613,15 @@ Bhavya 🐒✨
       const audioEl = document.getElementById("bgMusicElement");
       audioEl.src = CONFIG.AUDIO_FILE;
       audioEl.volume = CONFIG.AUDIO_VOLUME;
+
+      // Initialize route
+      const initialPage = getCurrentPageFromHash();
+      switchPage(initialPage);
     });
 
     /* =========================================================================
        AUDIO SYSTEM: DUAL MODE (MP3 FILE + WEB AUDIO OPERA SYNTH FALLBACK)
-       Looping, responsive mute toggle, and tab visibility pause/resume.
+       Background music keeps playing without interruption while she moves between pages!
        ========================================================================= */
     let audioContext = null;
     let isMusicPlaying = false;
@@ -2312,15 +2629,14 @@ Bhavya 🐒✨
     let synthLoopTimer = null;
     let melodyIndex = 0;
 
-    // Dramatic operatic vibrato melody notes for "Happy Birthday" in Hz
-    // Key of F Major: C4, C4, D4, C4, F4, E4 ... with vibrato
+    // Dramatic operatic vibrato melody notes for "Happy Birthday" (Key of F Major)
     const OPERA_MELODY = [
       { f: 261.63, d: 0.45 }, // Hap-
       { f: 261.63, d: 0.35 }, // py
       { f: 293.66, d: 0.70 }, // birth-
       { f: 261.63, d: 0.70 }, // day
       { f: 349.23, d: 0.75 }, // to
-      { f: 329.63, d: 1.30 }, // you... (cadence)
+      { f: 329.63, d: 1.30 }, // you...
 
       { f: 261.63, d: 0.45 }, // Hap-
       { f: 261.63, d: 0.35 }, // py
@@ -2342,7 +2658,7 @@ Bhavya 🐒✨
       { f: 440.00, d: 0.70 }, // birth-
       { f: 349.23, d: 0.75 }, // day
       { f: 392.00, d: 0.75 }, // to
-      { f: 349.23, d: 1.60 }  // you! (grand finale)
+      { f: 349.23, d: 1.60 }  // you!
     ];
 
     function initAudioContext() {
@@ -2370,7 +2686,6 @@ Bhavya 🐒✨
       const lfoGain = audioContext.createGain();
 
       lfo.frequency.setValueAtTime(5.2, now);
-      // Vibrato depth ~ 10 cents
       lfoGain.gain.setValueAtTime(frequency * 0.025, now);
       lfo.connect(osc.frequency);
 
@@ -2378,10 +2693,10 @@ Bhavya 🐒✨
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(frequency, now);
 
-      // Operatic dynamic envelope (gentle attack, sustained core, smooth release)
+      // Operatic dynamic envelope
       gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.linearRampToValueAtTime(0.22, now + 0.08); // Swell
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration * 1.05); // Fade
+      gain.gain.linearRampToValueAtTime(0.22, now + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration * 1.05);
 
       osc.connect(gain);
       gain.connect(audioContext.destination);
@@ -2468,7 +2783,7 @@ Bhavya 🐒✨
 
     document.getElementById("musicToggleBtn").addEventListener("click", toggleMusic);
 
-    // Pause music if user switches tab, resume when returning
+    // Pause music if user leaves tab, resume when returning
     document.addEventListener("visibilitychange", () => {
       const audioEl = document.getElementById("bgMusicElement");
       if (document.hidden) {
@@ -2488,20 +2803,20 @@ Bhavya 🐒✨
       }
     });
 
-    /* ==========================================================
-       SECTION 1: GIFT BOX OPENING TRIGGER
-       ========================================================== */
+    /* =========================================================================
+       OPENING SCREEN: GIFT BOX TAP HANDLER (USER GESTURE UNLOCKS AUDIO)
+       ========================================================================= */
     const giftBoxTrigger = document.getElementById("giftBoxTrigger");
-    let isOpened = false;
+    let isGiftOpened = false;
 
     giftBoxTrigger.addEventListener("click", () => {
-      if (isOpened) return;
-      isOpened = true;
+      if (isGiftOpened) return;
+      isGiftOpened = true;
 
-      // Start music on first tap (user gesture)
+      // Start background music (user gesture satisfies browser autoplay policy)
       startMusicPlayback();
 
-      // Lid flying animation
+      // Lid animation
       const lid = document.getElementById("giftLid");
       lid.style.transform = "translate(-30px, -70px) rotate(-35deg)";
       lid.style.opacity = "0.7";
@@ -2512,30 +2827,20 @@ Bhavya 🐒✨
       const originY = rect.top + rect.height / 2;
       triggerConfettiBurst(originX, originY, 90);
 
-      // Smooth reveal main page
+      // Reveal home page smoothly
       setTimeout(() => {
-        const openingScreen = document.getElementById("openingScreen");
-        openingScreen.classList.add("unlocked");
-
-        const mainPage = document.getElementById("mainPage");
-        mainPage.style.display = "block";
-        window.scrollTo({ top: 0, behavior: "smooth" });
-
-        // Extra celebratory confetti across screen
-        triggerConfettiBurst(window.innerWidth / 2, window.innerHeight * 0.3, 70);
+        document.getElementById("openingScreen").classList.add("unlocked");
+        triggerConfettiBurst(window.innerWidth / 2, window.innerHeight * 0.3, 75);
       }, 650);
     });
 
-    /* ==========================================================
-       CARD FLIPPING (SECTION 4)
-       ========================================================== */
+    /* =========================================================================
+       PAGE 3: CARD FLIP & FOOD RAIN
+       ========================================================================= */
     function toggleFlip(cardEl) {
       cardEl.classList.toggle("flipped");
     }
 
-    /* ==========================================================
-       BIRYANI RAIN EFFECT (SECTION 5)
-       ========================================================== */
     let biryaniCount = 0;
     const foodEmojis = ["🍛", "🍲", "🍽️", "🍗", "🍚", "🥘", "✨"];
     const rainBox = document.getElementById("foodRainBox");
@@ -2559,9 +2864,9 @@ Bhavya 🐒✨
       }
     });
 
-    /* ==========================================================
-       TRAVEL BUCKET LIST TOGGLE (SECTION 8)
-       ========================================================== */
+    /* =========================================================================
+       PAGE 5: TRAVEL BUCKET LIST TOGGLE
+       ========================================================================= */
     function toggleBucketItem(itemEl) {
       itemEl.classList.toggle("checked");
       if (itemEl.classList.contains("checked")) {
@@ -2570,16 +2875,16 @@ Bhavya 🐒✨
       }
     }
 
-    /* ==========================================================
-       MINI GAMES ZONE: ARPITA'S BIRTHDAY ARCADE 🎮
-       ========================================================== */
+    /* =========================================================================
+       PAGE 4: ARCADE (3 COMPACT PHONE-READY MINI GAMES)
+       ========================================================================= */
     let currentActiveGame = null;
 
     function openArcadeGame(gameType) {
       currentActiveGame = gameType;
       document.getElementById("arcadeModal").classList.add("active");
 
-      // Hide all game containers
+      // Hide all game panels first
       document.getElementById("gameCatcherContainer").style.display = "none";
       document.getElementById("gameMemoryContainer").style.display = "none";
       document.getElementById("gameQuizContainer").style.display = "none";
@@ -2601,7 +2906,6 @@ Bhavya 🐒✨
     }
 
     function closeArcadeGame() {
-      // Stop any game loops
       stopBiryaniCatcherGame();
       stopMemoryTimer();
       document.getElementById("arcadeModal").classList.remove("active");
@@ -2622,9 +2926,9 @@ Bhavya 🐒✨
       btn.onclick = onPlayAgain;
     }
 
-    /* ----------------------------------------------------------
+    /* -------------------------------------------------------------------------
        ARCADE GAME 1: BIRYANI CATCHER 🍛☁️
-       ---------------------------------------------------------- */
+       ------------------------------------------------------------------------- */
     let catcherAnimFrame = null;
     let catcherTimerInterval = null;
     let catcherScore = 0;
@@ -2681,7 +2985,7 @@ Bhavya 🐒✨
       catcherCtx.clearRect(0, 0, catcherCanvas.width, catcherCanvas.height);
 
       const now = Date.now();
-      // Spawn items (spawn rate increases slightly as time runs out)
+      // Spawn items (spawn interval decreases slightly as time runs out)
       const spawnInterval = Math.max(450, 850 - (30 - catcherTimeLeft) * 14);
       if (now - lastSpawnTime > spawnInterval) {
         lastSpawnTime = now;
@@ -2694,11 +2998,11 @@ Bhavya 🐒✨
         if (rand < 0.22) {
           type = 'cake';
           emoji = '🎂';
-          pts = 3;
+          pts = 3; // Bonus points
         } else if (rand < 0.52) {
           type = 'cloud';
           emoji = '⛈️';
-          pts = -1;
+          pts = -1; // Loss of life
         }
 
         catcherItems.push({
@@ -2743,8 +3047,7 @@ Bhavya 🐒✨
 
         // Collision check with plate
         if (item.y >= plateY - 14 && item.y <= plateY + 18) {
-          if (Math.abs(item.x - catcherPlateX) < plateWidth / 2 + 10) {
-            // Caught item!
+          if (Math.abs(item.x - catcherPlateX) < plateWidth / 2 + 12) {
             if (item.type === 'cloud') {
               catcherLives--;
               triggerConfettiBurst(item.x, item.y, 8);
@@ -2772,23 +3075,27 @@ Bhavya 🐒✨
       catcherAnimFrame = requestAnimationFrame(catcherLoop);
     }
 
-    // Touch & Mouse Plate Controls
+    // Touch & Mouse Plate Controls (Scroll locked with touch-action: none)
     function handleCatcherMove(clientX) {
       const rect = catcherCanvas.getBoundingClientRect();
       const x = clientX - rect.left;
       catcherPlateX = Math.max(38, Math.min(catcherCanvas.width - 38, x));
     }
+
     catcherCanvas.addEventListener("touchmove", (e) => {
       e.preventDefault();
       if (e.touches.length > 0) handleCatcherMove(e.touches[0].clientX);
     }, { passive: false });
+
     catcherCanvas.addEventListener("touchstart", (e) => {
       e.preventDefault();
       if (e.touches.length > 0) handleCatcherMove(e.touches[0].clientX);
     }, { passive: false });
+
     catcherCanvas.addEventListener("mousemove", (e) => {
       handleCatcherMove(e.clientX);
     });
+
     window.addEventListener("keydown", (e) => {
       if (currentActiveGame !== 'catcher') return;
       if (e.key === "ArrowLeft" || e.key === "a") {
@@ -2809,12 +3116,12 @@ Bhavya 🐒✨
         msg = "Weather alert: someone forgot to open their mouth 😂";
         icon = "🌧️";
         title = `Score: ${catcherScore} pts`;
-      } else if (catcherScore <= 25) {
+      } else if (catcherScore <= 24) {
         msg = "Solid foodie. Biryani approved. 🍛";
         icon = "🍲";
         title = `Score: ${catcherScore} pts`;
       } else {
-        msg = "Legendary foodie! A real biryani is now officially owed to you. 🏆✨";
+        msg = "Legendary foodie! A real biryani is now officially owed to you.";
         icon = "👑";
         title = `Score: ${catcherScore} pts!`;
         triggerConfettiBurst(window.innerWidth / 2, window.innerHeight * 0.4, 60);
@@ -2823,9 +3130,9 @@ Bhavya 🐒✨
       showGameResult(icon, title, msg, () => openArcadeGame('catcher'));
     }
 
-    /* ----------------------------------------------------------
-       ARCADE GAME 2: WEATHER MATCH ⛅ (MEMORY GAME)
-       ---------------------------------------------------------- */
+    /* -------------------------------------------------------------------------
+       ARCADE GAME 2: WEATHER MATCH ⛅ (12 CARDS / 6 PAIRS)
+       ------------------------------------------------------------------------- */
     const weatherSymbols = ["☀️", "🌧️", "⛈️", "🌈", "❄️", "🌪️"];
     let memoryDeck = [];
     let memoryFlippedIndices = [];
@@ -2909,8 +3216,8 @@ Bhavya 🐒✨
               triggerConfettiBurst(window.innerWidth / 2, window.innerHeight * 0.4, 75);
               showGameResult(
                 "🌦️",
-                "Forecast Complete!",
-                `The meteorologist has spoken 🌦️\nYou cleared all 6 pairs in ${memoryMoves} moves and ${memoryTimer}s!`,
+                "Forecast complete!",
+                `The meteorologist has spoken 🌦️\nCompleted in ${memoryMoves} moves and ${memoryTimer}s!`,
                 () => openArcadeGame('memory')
               );
             }, 550);
@@ -2928,9 +3235,9 @@ Bhavya 🐒✨
       }
     }
 
-    /* ----------------------------------------------------------
+    /* -------------------------------------------------------------------------
        ARCADE GAME 3: HOW WELL DO YOU KNOW ME? 💬 (QUIZ)
-       ---------------------------------------------------------- */
+       ------------------------------------------------------------------------- */
     let quizCurrentIdx = 0;
     let quizScore = 0;
 
@@ -2972,13 +3279,12 @@ Bhavya 🐒✨
         quizScore++;
         clickedBtn.classList.add("correct");
         feedback.style.color = "#16a34a";
-        feedback.textContent = "Spot on, bestie! Correct! 🌟";
+        feedback.textContent = "Correct! Spot on! 🌟";
       } else {
         clickedBtn.classList.add("incorrect");
-        // Also highlight correct answer
         allBtns[qData.correctIndex].classList.add("correct");
         feedback.style.color = "#dc2626";
-        feedback.textContent = "Wrong! Do you even know me bestie? 😂";
+        feedback.textContent = "Wrong! Do you even know me? 😂";
       }
 
       setTimeout(() => {
@@ -2986,38 +3292,37 @@ Bhavya 🐒✨
         if (quizCurrentIdx < CONFIG.QUIZ_QUESTIONS.length) {
           renderQuizQuestion();
         } else {
-          // Quiz finished
+          // Final quiz scoring
           let finalMsg = "";
           let finalIcon = "🏆";
           let finalTitle = `Score: ${quizScore} / 5`;
 
           if (quizScore === 5) {
-            finalMsg = "Certified best friend 🏆\nYou know me inside out!";
+            finalMsg = "Certified best friend 🏆";
             finalIcon = "👑";
             triggerConfettiBurst(window.innerWidth / 2, window.innerHeight * 0.4, 80);
           } else if (quizScore >= 3) {
-            finalMsg = "Pretty good, bestie 😄\nAlmost perfection!";
+            finalMsg = "Pretty good, bestie 😄";
             finalIcon = "🎉";
           } else {
-            finalMsg = "We need to talk more 😂\nTime for emergency DMs!";
+            finalMsg = "We need to talk more 😂";
             finalIcon = "💬";
           }
 
           showGameResult(finalIcon, finalTitle, finalMsg, () => openArcadeGame('quiz'));
         }
-      }, 1300);
+      }, 1250);
     }
 
-    /* ==========================================================
-       SECTION 10: GRAND FINALE & SPECTACULAR FIREWORKS ENGINE 🎆
-       ========================================================== */
+    /* =========================================================================
+       PAGE 7: GRAND FINALE FIREWORKS ENGINE 🎆
+       ========================================================================= */
     const fireworksCanvas = document.getElementById("fireworksCanvas");
     const fireworksCtx = fireworksCanvas.getContext("2d");
     let fireworkParticles = [];
     let fireworkRockets = [];
     let isFireworksActive = false;
     let autoFireworksInterval = null;
-    let isContinuousFireworksRunning = false;
 
     function resizeFireworks() {
       fireworksCanvas.width = window.innerWidth;
@@ -3026,61 +3331,20 @@ Bhavya 🐒✨
     window.addEventListener("resize", resizeFireworks);
     resizeFireworks();
 
-    // Vibrant celebration palettes
     const FIREWORK_PALETTES = [
-      ['#ff3366', '#ff7597', '#ffd1dc', '#ffffff'], // Rose Sparkle
-      ['#38bdf8', '#0284c7', '#bae6fd', '#ffffff'], // Sky Azure
-      ['#a855f7', '#9333ea', '#e9d5ff', '#ffffff'], // Royal Lavender
-      ['#facc15', '#f59e0b', '#fef08a', '#ffffff'], // Golden Kamuro
-      ['#4ade80', '#22c55e', '#bbf7d0', '#ffffff'], // Emerald Mint
-      ['#fb923c', '#ea580c', '#ffedd5', '#ffffff'], // Saffron Sunset
-      ['#ec4899', '#f43f5e', '#fde047', '#38bdf8']  // Rainbow Prism
+      ['#ff3366', '#ff7597', '#ffd1dc', '#ffffff'],
+      ['#38bdf8', '#0284c7', '#bae6fd', '#ffffff'],
+      ['#a855f7', '#9333ea', '#e9d5ff', '#ffffff'],
+      ['#facc15', '#f59e0b', '#fef08a', '#ffffff'],
+      ['#4ade80', '#22c55e', '#bbf7d0', '#ffffff'],
+      ['#ec4899', '#f43f5e', '#fde047', '#38bdf8']
     ];
 
-    // Synth firework sounds (harmonic pentatonic pops & ascending rocket whistles)
-    function playFireworkSound(type = 'pop') {
-      if (!audioContext) return;
-      try {
-        const now = audioContext.currentTime;
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-
-        if (type === 'whistle') {
-          osc.type = 'triangle';
-          const startF = 350 + Math.random() * 150;
-          osc.frequency.setValueAtTime(startF, now);
-          osc.frequency.exponentialRampToValueAtTime(startF * 2.2, now + 0.35);
-
-          gain.gain.setValueAtTime(0.025, now);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.38);
-          osc.connect(gain);
-          gain.connect(audioContext.destination);
-          osc.start(now);
-          osc.stop(now + 0.4);
-        } else {
-          // Melodic burst pop
-          osc.type = 'sine';
-          const chordFreqs = [523.25, 659.25, 783.99, 1046.50, 1174.66, 1318.51];
-          const freq = chordFreqs[Math.floor(Math.random() * chordFreqs.length)];
-          osc.frequency.setValueAtTime(freq, now);
-          osc.frequency.exponentialRampToValueAtTime(freq * 0.5, now + 0.22);
-
-          gain.gain.setValueAtTime(0.06, now);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
-          osc.connect(gain);
-          gain.connect(audioContext.destination);
-          osc.start(now);
-          osc.stop(now + 0.26);
-        }
-      } catch (e) {}
-    }
-
-    // Launch a rocket shooting up from the bottom
-    function launchRocket(targetX, targetY, type = 'peony') {
+    function launchRocket(targetX, targetY) {
       const palette = FIREWORK_PALETTES[Math.floor(Math.random() * FIREWORK_PALETTES.length)];
       const startX = targetX + (Math.random() * 80 - 40);
       const distanceY = window.innerHeight - targetY;
-      const speed = Math.sqrt(2 * 0.16 * Math.max(160, distanceY)) + (Math.random() * 2 - 1);
+      const speed = Math.sqrt(2 * 0.16 * Math.max(160, distanceY));
 
       fireworkRockets.push({
         x: startX,
@@ -3089,142 +3353,34 @@ Bhavya 🐒✨
         vy: -speed,
         targetY: targetY,
         palette: palette,
-        type: type,
         color: palette[0],
         trail: []
       });
-
-      playFireworkSound('whistle');
 
       if (!isFireworksActive) {
         animateFireworks();
       }
     }
 
-    // Explode a rocket at (x, y) into multi-style particle effects
-    function triggerExplosion(x, y, palette, type = 'peony') {
-      playFireworkSound('pop');
-
-      // Center flash bloom
-      fireworkParticles.push({
-        isFlash: true,
-        x: x,
-        y: y,
-        radius: 45,
-        alpha: 0.75,
-        decay: 0.07,
-        color: '#ffffff'
-      });
-
-      if (type === 'heart') {
-        // Heart-shaped burst
-        const count = 75;
-        for (let i = 0; i < count; i++) {
-          const t = (i / count) * Math.PI * 2;
-          const hx = 16 * Math.pow(Math.sin(t), 3);
-          const hy = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
-          const speed = (Math.random() * 0.35 + 0.8) * 0.3;
-
-          fireworkParticles.push({
-            x: x,
-            y: y,
-            vx: hx * speed,
-            vy: hy * speed,
-            color: palette[Math.floor(Math.random() * palette.length)],
-            alpha: 1,
-            decay: Math.random() * 0.012 + 0.011,
-            radius: Math.random() * 2.5 + 2,
-            gravity: 0.035,
-            history: []
-          });
-        }
-      } else if (type === 'willow') {
-        // Golden Kamuro / Willow cascading rain
-        const count = 95;
-        for (let i = 0; i < count; i++) {
-          const angle = Math.random() * Math.PI * 2;
-          const speed = Math.random() * 6.5 + 1.2;
-          fireworkParticles.push({
-            x: x,
-            y: y,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            color: '#facc15',
-            alpha: 1,
-            decay: Math.random() * 0.009 + 0.006, // lingers longer
-            radius: Math.random() * 2.8 + 1.6,
-            gravity: 0.068,
-            history: []
-          });
-        }
-      } else if (type === 'ring') {
-        // Symmetrical ring
-        const count = 55;
-        const ringSpeed = Math.random() * 2 + 5;
-        for (let i = 0; i < count; i++) {
-          const angle = (i / count) * Math.PI * 2;
-          fireworkParticles.push({
-            x: x,
-            y: y,
-            vx: Math.cos(angle) * ringSpeed,
-            vy: Math.sin(angle) * ringSpeed,
-            color: palette[0],
-            alpha: 1,
-            decay: 0.013,
-            radius: 3,
-            gravity: 0.045,
-            history: []
-          });
-        }
-        // Center core sparks
-        for (let i = 0; i < 24; i++) {
-          const angle = Math.random() * Math.PI * 2;
-          const speed = Math.random() * 2.5;
-          fireworkParticles.push({
-            x: x,
-            y: y,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            color: '#ffffff',
-            alpha: 1,
-            decay: 0.022,
-            radius: 2,
-            gravity: 0.045,
-            history: []
-          });
-        }
-      } else {
-        // Grand Chrysanthemum sphere with sparkle tails
-        const count = 85;
-        for (let i = 0; i < count; i++) {
-          const angle = Math.random() * Math.PI * 2;
-          const speed = Math.random() * 7.5 + 1.5;
-          const col = palette[Math.floor(Math.random() * palette.length)];
-          fireworkParticles.push({
-            x: x,
-            y: y,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            color: col,
-            alpha: 1,
-            decay: Math.random() * 0.016 + 0.011,
-            radius: Math.random() * 3 + 2,
-            gravity: 0.065,
-            history: []
-          });
-        }
+    function triggerExplosion(x, y, palette) {
+      const count = 75;
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 6.5 + 1.2;
+        fireworkParticles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          color: palette[Math.floor(Math.random() * palette.length)],
+          alpha: 1,
+          decay: Math.random() * 0.015 + 0.012,
+          radius: Math.random() * 2.8 + 1.8,
+          gravity: 0.065
+        });
       }
     }
 
-    // Direct multi-burst trigger (for clicks & manual triggers)
-    function triggerFireworksBurst(x, y) {
-      const palette = FIREWORK_PALETTES[Math.floor(Math.random() * FIREWORK_PALETTES.length)];
-      const types = ['peony', 'willow', 'ring', 'heart'];
-      const chosenType = types[Math.floor(Math.random() * types.length)];
-      triggerExplosion(x, y, palette, chosenType);
-    }
-
-    // Animation loop for rockets, tails, and exploded particles
     function animateFireworks() {
       if (fireworkRockets.length === 0 && fireworkParticles.length === 0) {
         isFireworksActive = false;
@@ -3233,79 +3389,38 @@ Bhavya 🐒✨
       }
 
       isFireworksActive = true;
-      // Soft semi-transparent clear for smooth motion trails
       fireworksCtx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
 
-      // 1. Draw & Update Rockets
+      // Rockets
       for (let i = fireworkRockets.length - 1; i >= 0; i--) {
         const r = fireworkRockets[i];
         r.x += r.vx;
         r.y += r.vy;
-        r.vy += 0.13; // deceleration
+        r.vy += 0.13;
 
-        // Add to rocket spark trail
-        r.trail.push({ x: r.x, y: r.y });
-        if (r.trail.length > 8) r.trail.shift();
-
-        // Draw trail
-        for (let t = 0; t < r.trail.length; t++) {
-          const pt = r.trail[t];
-          fireworksCtx.save();
-          fireworksCtx.fillStyle = r.color;
-          fireworksCtx.globalAlpha = (t / r.trail.length) * 0.85;
-          fireworksCtx.beginPath();
-          fireworksCtx.arc(pt.x, pt.y, 2.8, 0, Math.PI * 2);
-          fireworksCtx.fill();
-          fireworksCtx.restore();
-        }
-
-        // Draw rocket glowing head
         fireworksCtx.save();
         fireworksCtx.fillStyle = '#ffffff';
         fireworksCtx.shadowColor = r.color;
-        fireworksCtx.shadowBlur = 12;
+        fireworksCtx.shadowBlur = 10;
         fireworksCtx.beginPath();
-        fireworksCtx.arc(r.x, r.y, 3.8, 0, Math.PI * 2);
+        fireworksCtx.arc(r.x, r.y, 3.5, 0, Math.PI * 2);
         fireworksCtx.fill();
         fireworksCtx.restore();
 
-        // Explode when reaching apex or target height
         if (r.y <= r.targetY || r.vy >= 0) {
-          triggerExplosion(r.x, r.y, r.palette, r.type);
+          triggerExplosion(r.x, r.y, r.palette);
           fireworkRockets.splice(i, 1);
         }
       }
 
-      // 2. Draw & Update Exploded Particles
+      // Particles
       for (let i = fireworkParticles.length - 1; i >= 0; i--) {
         const p = fireworkParticles[i];
-
-        // Central bloom flash
-        if (p.isFlash) {
-          p.alpha -= p.decay;
-          if (p.alpha <= 0) {
-            fireworkParticles.splice(i, 1);
-            continue;
-          }
-          fireworksCtx.save();
-          fireworksCtx.globalAlpha = p.alpha;
-          fireworksCtx.fillStyle = p.color;
-          fireworksCtx.beginPath();
-          fireworksCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          fireworksCtx.fill();
-          fireworksCtx.restore();
-          continue;
-        }
-
-        // Trailing history
-        p.history.push({ x: p.x, y: p.y });
-        if (p.history.length > 5) p.history.shift();
-
         p.x += p.vx;
         p.y += p.vy;
-        p.vx *= 0.96; // air friction
+        p.vx *= 0.96;
         p.vy *= 0.96;
-        p.vy += p.gravity || 0.06;
+        p.vy += p.gravity;
         p.alpha -= p.decay;
 
         if (p.alpha <= 0) {
@@ -3313,27 +3428,11 @@ Bhavya 🐒✨
           continue;
         }
 
-        // Draw particle tail
-        if (p.history.length > 1) {
-          fireworksCtx.save();
-          fireworksCtx.strokeStyle = p.color;
-          fireworksCtx.globalAlpha = p.alpha * 0.65;
-          fireworksCtx.lineWidth = p.radius * 0.8;
-          fireworksCtx.beginPath();
-          fireworksCtx.moveTo(p.history[0].x, p.history[0].y);
-          for (let h = 1; h < p.history.length; h++) {
-            fireworksCtx.lineTo(p.history[h].x, p.history[h].y);
-          }
-          fireworksCtx.stroke();
-          fireworksCtx.restore();
-        }
-
-        // Draw particle glowing head
         fireworksCtx.save();
         fireworksCtx.globalAlpha = p.alpha;
         fireworksCtx.fillStyle = p.color;
         fireworksCtx.shadowColor = p.color;
-        fireworksCtx.shadowBlur = 10;
+        fireworksCtx.shadowBlur = 8;
         fireworksCtx.beginPath();
         fireworksCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         fireworksCtx.fill();
@@ -3343,102 +3442,29 @@ Bhavya 🐒✨
       requestAnimationFrame(animateFireworks);
     }
 
-    // Launch continuous barrage of fireworks across the sky
-    function startContinuousFireworks(durationMs = 0) {
-      if (autoFireworksInterval) clearInterval(autoFireworksInterval);
-      isContinuousFireworksRunning = true;
-
-      // Immediate opening salvo
-      for (let i = 0; i < 4; i++) {
+    function startCelebrationFireworks() {
+      for (let i = 0; i < 5; i++) {
         setTimeout(() => {
           const rx = Math.random() * (window.innerWidth * 0.8) + (window.innerWidth * 0.1);
-          const ry = Math.random() * (window.innerHeight * 0.42) + (window.innerHeight * 0.1);
-          const types = ['peony', 'willow', 'ring', 'heart'];
-          launchRocket(rx, ry, types[i % types.length]);
-        }, i * 140);
-      }
-
-      // Continuous rhythmic barrages
-      autoFireworksInterval = setInterval(() => {
-        const rx = Math.random() * (window.innerWidth * 0.84) + (window.innerWidth * 0.08);
-        const ry = Math.random() * (window.innerHeight * 0.48) + (window.innerHeight * 0.08);
-        const types = ['peony', 'willow', 'ring', 'heart'];
-        launchRocket(rx, ry, types[Math.floor(Math.random() * types.length)]);
-
-        // 45% chance of simultaneous double burst
-        if (Math.random() < 0.45) {
-          setTimeout(() => {
-            const rx2 = Math.random() * (window.innerWidth * 0.8) + (window.innerWidth * 0.1);
-            const ry2 = Math.random() * (window.innerHeight * 0.42) + (window.innerHeight * 0.1);
-            launchRocket(rx2, ry2, types[Math.floor(Math.random() * types.length)]);
-          }, 140);
-        }
-      }, 340);
-
-      if (durationMs > 0) {
-        setTimeout(() => stopContinuousFireworks(), durationMs);
+          const ry = Math.random() * (window.innerHeight * 0.45) + (window.innerHeight * 0.1);
+          launchRocket(rx, ry);
+        }, i * 220);
       }
     }
 
-    function stopContinuousFireworks() {
-      if (autoFireworksInterval) {
-        clearInterval(autoFireworksInterval);
-        autoFireworksInterval = null;
-      }
-      isContinuousFireworksRunning = false;
-    }
-
-    // Launch a mega fan burst (6 rockets fired together in an arc)
-    function launchMegaFireworksBarrage() {
-      const types = ['peony', 'willow', 'ring', 'heart', 'peony', 'willow'];
-      for (let i = 0; i < 6; i++) {
-        setTimeout(() => {
-          const targetX = (window.innerWidth * 0.15) + (i * (window.innerWidth * 0.7) / 5);
-          const targetY = (window.innerHeight * 0.15) + (Math.sin(i / 5 * Math.PI) * 40);
-          launchRocket(targetX, targetY, types[i]);
-        }, i * 120);
-      }
-      triggerConfettiBurst(window.innerWidth / 2, window.innerHeight * 0.35, 90);
-    }
-
-    // Event Handlers for Buttons
     document.getElementById("grandSurpriseBtn").addEventListener("click", () => {
       document.getElementById("grandModal").classList.add("active");
-      startContinuousFireworks(); // Launches continuous fireworks!
-      triggerConfettiBurst(window.innerWidth / 2, window.innerHeight * 0.35, 120);
-    });
-
-    document.getElementById("launchMoreFireworksBtn").addEventListener("click", () => {
-      launchMegaFireworksBarrage();
-    });
-
-    document.getElementById("toggleSkyFireworksBtn").addEventListener("click", () => {
-      if (isContinuousFireworksRunning) {
-        stopContinuousFireworks();
-        document.getElementById("toggleSkyFireworksBtn").innerHTML = "<span>🎆 Start Fireworks Show</span>";
-      } else {
-        startContinuousFireworks();
-        document.getElementById("toggleSkyFireworksBtn").innerHTML = "<span>⏸️ Pause Fireworks Show</span>";
-      }
+      startCelebrationFireworks();
+      triggerConfettiBurst(window.innerWidth / 2, window.innerHeight * 0.35, 110);
     });
 
     document.getElementById("grandModalCloseBtn").addEventListener("click", () => {
       document.getElementById("grandModal").classList.remove("active");
     });
 
-    // Tap/Click anywhere on the screen during celebration to trigger immediate firework at touch position!
-    window.addEventListener("pointerdown", (e) => {
-      // Avoid intercepting interactive buttons or arcade cards
-      if (e.target.closest("button") || e.target.closest(".flip-card") || e.target.closest(".bucket-item") || e.target.closest("#arcadeModal")) {
-        return;
-      }
-      triggerFireworksBurst(e.clientX, e.clientY);
-      playFireworkSound('pop');
-    });
-
-    /* ==========================================================
+    /* =========================================================================
        CONFETTI ENGINE (LIGHTWEIGHT VANILLA CANVAS SYSTEM)
-       ========================================================== */
+       ========================================================================= */
     const confettiCanvas = document.getElementById("confettiCanvas");
     const confettiCtx = confettiCanvas.getContext("2d");
     let confettiList = [];
@@ -3488,7 +3514,7 @@ Bhavya 🐒✨
         const c = confettiList[i];
         c.x += c.vx;
         c.y += c.vy;
-        c.vy += 0.16; // gravity
+        c.vy += 0.16;
         c.rotation += c.rotationSpeed;
         c.alpha -= c.decay;
 
@@ -3510,4 +3536,5 @@ Bhavya 🐒✨
     }
   </script>
 </body>
+
 </html>
